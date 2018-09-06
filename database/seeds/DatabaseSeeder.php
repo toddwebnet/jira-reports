@@ -11,6 +11,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        \App\Models\Project::where([])->delete();
+        \App\Models\Project::create(
+            ['project_name' => 'PE']
+        );
+
+        \App\Models\Sprint::where([])->delete();
+        \App\Models\Sprint::create([
+            'sprint_name' => 'GAIA-18',
+            'begin_date'  => '2018-09-02',
+            'end_date' => '2018-09-15'
+        ]);
+        \App\Models\Sprint::create([
+            'sprint_name' => 'GAIA-19',
+            'begin_date'  => '2018-09-16',
+            'end_date' => '2018-09-29'
+        ]);
+
+        \App\Models\Status::where([])->delete();
     }
 }

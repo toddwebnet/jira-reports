@@ -7,32 +7,50 @@ use Illuminate\Support\Facades\Log;
 
 class BaseApi
 {
-    //Guzzle client
-    public $client;
 
     public $baseUrl;
+    public $auth = [];
 
     public function __construct(string $baseUrl = '')
     {
         $this->setBaseUrl($baseUrl);
+        $this->auth = [];
     }
 
     protected function setBaseUrl(string $baseUrl)
     {
         $this->baseUrl = $baseUrl;
-        $this->client = new Client([
+    }
+
+    protected function setAuth($username, $password)
+    {
+
+        $this->auth = [
+            'auth' => [
+                $username,
+                $password
+            ]
+        ];
+    }
+
+    private function setClient()
+    {
+        $options = array_merge([
             'base_uri' => $this->baseUrl,
-            'cookies' => true,
-        ]);
+        ], $this->auth);
+
+        return new Client($options);
     }
 
     protected function call(string $method, string $path, $params = null, array $options = [])
     {
+
         //Set base options
         if (!array_key_exists('headers', $options)) {
             $options['headers'] = [];
         }
-
+        $options['headers']['Accept'] = 'application/json';
+        $options['headers']['Authorization'] = "Basic amFtZXMudG9kZEBpbnRlcmZvbGlvLmNvbTpHcjAwdnkyNw==";
         //Build request params
         $this->buildParams($method, $params, $options);
 
@@ -42,7 +60,8 @@ class BaseApi
                 $method, $path, $options
             ]));
         //Perform the request
-        $response = $this->client->request($method, $path, $options);
+        $client = $this->setClient();
+        $response = $client->request($method, $path, $options);
         Log::info("API - Response:\n" . json_encode(
                 (method_exists($response, 'getBody')) ? (string)$response->getBody() : $response)
         );
@@ -55,7 +74,7 @@ class BaseApi
      * @param $params
      * @param array $options
      */
-    public function buildParams(string $method, $params, array &$options)
+    protected function buildParams(string $method, $params, array &$options)
     {
         //If $params is a string, assume the call needs to post directly to the body
         if ($params !== null) {
@@ -84,7 +103,6 @@ class BaseApi
                                     http_build_query($params));
                                 $options['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
                                 $options['headers']['Accept'] = 'application/json';
-
                             }
                         }
                         break;

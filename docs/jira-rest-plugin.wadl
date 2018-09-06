@@ -1,0 +1,1228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:application
+        xmlns:ns2="http://research.sun.com/wadl/2006/10"><ns2:doc
+        jersey:generatedBy="Jersey: 1.0.3 04/16/2009 12:07 AM"
+        xmlns:jersey="http://jersey.dev.java.net/"/><ns2:doc
+        xml:lang="en"
+            title="JIRA 5.0-rc1 REST API documentation"><![CDATA[
+        This documents the current REST API provided by JIRA.
+    ]]></ns2:doc><ns2:grammars><ns2:include
+        href="schema1.xsd"/></ns2:grammars><ns2:resources
+            base="http://example.com:8080/jira/rest/"><ns2:resource
+                path="api/2/user"><ns2:method name="GET"
+                        id="getUser"><ns2:doc><![CDATA[Returns a user. This resource cannot be accessed anonymously.]]></ns2:doc><ns2:request><ns2:param
+                        type="xs:string" style="query" name="username"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the username]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="user"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA user in JSON format.]]></ns2:doc></ns2:representation><ns2:representation
+                status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="search"><ns2:method name="GET"
+                            id="findUsers"><ns2:doc><![CDATA[Returns a list of users that match the search string. This resource cannot be accessed anonymously.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[A string used to search username, Name or e-mail address]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query" name="startAt"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first user to return (0-based)]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query"
+                            name="maxResults"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the maximum number of users to return (defaults to 50). The maximum allowed value is 1000.
+ If you specify a value that is higher than this number, your search results will be truncated.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="List of users"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA user in JSON format.]]></ns2:doc></ns2:representation><ns2:representation
+                status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="assignable/search"><ns2:method name="GET"
+                            id="findAssignableUsers"><ns2:doc><![CDATA[Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+ Please note that this resource should be called with an issue key when a list of assignable users is retrieved
+ for editing.  For create only a project key should be supplied.  The list of assignable users may be incorrect
+ if it's called with the project key for editing.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the username]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="project"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the key of the project we are finding assignable users for]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="issueKey"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue key for the issue being edited we need to find assignable users for.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query" name="startAt"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first user to return (0-based)]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query"
+                            name="maxResults"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the maximum number of users to return (defaults to 50). The maximum allowed value is 1000.
+ If you specify a value that is higher than this number, your search results will be truncated.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="user"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA user in JSON format.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if no project or issue key was provided]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="viewissue/search"><ns2:method name="GET"
+                            id="findUsersWithBrowsePermission"><ns2:doc><![CDATA[Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+ Given an issue key this resource will provide a list of users that match the search string and have
+ the browse issue permission for the issue provided.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the username]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="issueKey"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue key for the issue being edited we need to find viewable users for.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="projectKey"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the optional project key to search for users with if no issueKey is supplied.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query" name="startAt"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first user to return (0-based)]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query"
+                            name="maxResults"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the maximum number of users to return (defaults to 50). The maximum allowed value is 1000.
+ If you specify a value that is higher than this number, your search results will be truncated.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="user"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA user in JSON format.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if no project or issue key was provided]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="assignable/multiProjectSearch"><ns2:method
+                    name="GET"
+                            id="findBulkAssignableUsers"><ns2:doc><![CDATA[Returns a list of users that match the search string and can be assigned issues for all the given projects.
+ This resource cannot be accessed anonymously.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the username]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="projectKeys"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the keys of the projects we are finding assignable users for, comma-separated]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query" name="startAt"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first user to return (0-based)]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:int" style="query"
+                            name="maxResults"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the maximum number of users to return (defaults to 50). The maximum allowed value is 1000.
+ If you specify a value that is higher than this number, your search results will be truncated.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="user"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA user in JSON format.]]></ns2:doc></ns2:representation><ns2:representation
+                status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="avatars"><ns2:method name="GET"
+                            id="getAllAvatars"><ns2:doc><![CDATA[Returns all avatars which are visible for the currently logged in user.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[username]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested user is not found.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="avatars"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":1000,"owner":"fred","isSystemAvatar":true,"isSelected":true,"selected":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a map containing a list of avatars for both custom an system avatars]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the current user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="500"><ns2:doc><![CDATA[Returned if an error occurs while retrieving the list of avatars.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="avatar"><ns2:method name="POST"
+                            id="createAvatarFromTemporary"><ns2:doc><![CDATA[Converts temporary avatar into a real avatar]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[username]]></ns2:doc></ns2:param><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"needsCropping":false}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have EDIT PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":1000,"owner":"fred","isSystemAvatar":true,"isSelected":true,"selected":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns created avatar]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the cropping coordinates are invalid]]></ns2:doc></ns2:representation><ns2:representation
+                            status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to pick avatar]]></ns2:doc></ns2:representation><ns2:representation
+                    status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateProjectAvatar"><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:representation
+                            mediaType="application/json"/></ns2:request><ns2:response><ns2:representation
+                mediaType="application/json"/></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="avatar/temporary"><ns2:method name="POST"
+                            id="storeTemporaryAvatar"><ns2:doc><![CDATA[Creates temporary avatar]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[username]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="filename"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[name of file being uploaded]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:long" style="query" name="size"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[size of file]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have EDIT PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"url":"http://example.com/jira/secure/temporaryavatar?cropped=true","needsCropping":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[temporary avatar cropping instructions]]></ns2:doc></ns2:representation><ns2:representation
+                            status="403"><ns2:doc><![CDATA[Returned if the request does not conain a valid XSRF token]]></ns2:doc></ns2:representation><ns2:representation
+                    status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="storeTemporaryAvatarUsingMultiPart"><ns2:doc><![CDATA[Creates temporary avatar using multipart. The response is sent back as JSON stored in a textarea. This is because
+ the client uses remote iframing to submit avatars using multipart. So we must send them a valid HTML page back from
+ which the client parses the JSON from.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[Username]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="" name="avatar"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[name of file being uploaded]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if user does NOT exist]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="text/html" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"url":"http://example.com/jira/secure/temporaryavatar?cropped=true","needsCropping":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[temporary avatar cropping instructions embeded in HTML page. Error messages will also be embeded in the page.]]></ns2:doc></ns2:representation><ns2:representation
+                status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="avatar/{id}"><ns2:param type="xs:long"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[database id for avatar]]></ns2:doc></ns2:param><ns2:method
+                    name="DELETE"
+                            id="deleteAvatar"><ns2:doc><![CDATA[Deletes avatar]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[username]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            mediaType="application/json"
+                            status="204"><ns2:doc><![CDATA[Returned if the avatar is successfully deleted.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the avatar does not exist or the currently authenticated user does not have permission to
+      delete it.]]></ns2:doc></ns2:representation><ns2:representation
+            status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to delete the avatar.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="auth/1/websudo"><ns2:method name="DELETE"
+                        id="release"><ns2:response><ns2:representation
+            mediaType="*/*"/></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/application-properties"><ns2:method
+                name="GET" id="getProperty"><ns2:request><ns2:param
+                        type="xs:string" style="query" name="key"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                mediaType="application/json"/></ns2:response></ns2:method><ns2:resource
+                    path="/{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:method
+                    name="PUT"
+                            id="setPropertyViaRestfulTable"><ns2:request><ns2:representation
+                            mediaType="*/*"/></ns2:request><ns2:response><ns2:representation
+            mediaType="application/json"/></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/customFieldOption"><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an custom Field Option id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getCustomFieldOption"><ns2:doc><![CDATA[Returns a full representation of the custom Field Option that has the given id.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the custom Field Option does not exist, or is not visible to the calling user.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+            element="customFieldOption"><ns2:doc><![CDATA[Returned if the custom Field Option exists and is visible by the calling user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/project/{projectKey}/role"><ns2:param
+                type="xs:string" style="template" name="projectKey"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project key]]></ns2:doc></ns2:param><ns2:method
+                name="GET"
+                        id="getProjectRoles"><ns2:doc><![CDATA[Contains a list of roles in this project with links to full details.]]></ns2:doc><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the project is not found, or the calling user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json"
+                                status="200"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"Users":"http://www.example.com/jira/rest/api/2/project/MKY/role/10001","Administrators":"http://www.example.com/jira/rest/api/2/project/MKY/role/10002","Developers":"http://www.example.com/jira/rest/api/2/project/MKY/role/10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project exists and the user has permission to view it. A maps of roles to URIs containing
+      full details for that role.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:long"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project role id]]></ns2:doc></ns2:param><ns2:param
+                    type="xs:string" style="template" name="projectKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getProjectRole"><ns2:doc><![CDATA[Details on a given project role.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the project or role is not found, or the calling user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/project/MKY/role/10360","name":"Developers","id":10360,"description":"A project role that represents developers in a project","actors":[{"id":10240,"displayName":"jira-developers","type":"atlassian-group-role-actor","name":"jira-developers"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project and role exists and the user has permission to view it. Contains the role name,
+      description, and project actors.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="setActors"><ns2:doc><![CDATA[Updates a project role to contain the sent actors.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{ "user" : ["admin"] }
+      { "group" : ["jira-developers"] }</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the actor could not be added to the project role]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/project/MKY/role/10360","name":"Developers","id":10360,"description":"A project role that represents developers in a project","actors":[{"id":10240,"displayName":"jira-developers","type":"atlassian-group-role-actor","name":"jira-developers"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project and role exists and the user has permission to view it. Contains the role name,
+      description, and project actors.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="addActorUsers"><ns2:doc><![CDATA[Add an actor to a project role.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{ "user" : ["admin"] }
+      { "group" : ["jira-developers"] }</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the actor could not be added to the project role]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/project/MKY/role/10360","name":"Developers","id":10360,"description":"A project role that represents developers in a project","actors":[{"id":10240,"displayName":"jira-developers","type":"atlassian-group-role-actor","name":"jira-developers"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project and role exists and the user has permission to view it. Contains the role name,
+      description, and project actors.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="deleteActor"><ns2:doc><![CDATA[Remove actors from a project role.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="" name=""
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:param
+                            type="xs:string" style="" name=""
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the actor was successfully removed from the project role.]]></ns2:doc></ns2:representation><ns2:representation
+            status="404"><ns2:doc><![CDATA[Returned if the project or role is not found, the calling user does not have permission to view it, or does
+      not have permission to modify the actors in the project role.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/groups"><ns2:doc><![CDATA[REST endpoint for searching groups in a group picker]]></ns2:doc><ns2:resource
+                    path="/picker"><ns2:method name="GET"
+                            id="findGroups"><ns2:doc><![CDATA[Returns groups with substrings matching a given query. This is mainly for use with
+ the group picker, so the returned groups contain html to be used as picker suggestions.
+ The groups are also wrapped in a single response object that also contains a header for
+ use in the picker, specifically <i>Showing X of Y matching groups</i>.
+
+ The number of groups returned is limited by the system property "jira.ajax.autocomplete.limit"
+
+ The groups will be unique and sorted.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query" name="query"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String to match groups agains]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            mediaType="application/json" status="200"
+            element="groupsuggestions"><ns2:doc><![CDATA[Returned even if no groups match the given substring]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/issuetype"><ns2:method name="GET"
+                        id="getIssueAllTypes"><ns2:doc><![CDATA[Returns a list of all issue types visible to the user]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json"
+                status="200"><ns2:doc><![CDATA[Returned if the issue type exists and is visible by the calling user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an issue type id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getIssueType"><ns2:doc><![CDATA[Returns a full representation of the issue type that has the given id.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue type does not exist, or is not visible to the calling user.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+            element="issueType"><ns2:doc><![CDATA[Returned if the issue type exists and is visible by the calling user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/issueLink"><ns2:doc><![CDATA[The Link Issue Resource provides functionality to manage issue links.]]></ns2:doc><ns2:method
+                name="POST"
+                        id="linkIssues"><ns2:doc><![CDATA[Creates an issue link between two issues.
+ The user requires the link issue permission for the issue which will be linked to another issue.
+ The specified link type in the request is used to create the link and will create a link from the first issue
+ to the second issue using the outward description. It also create a link from the second issue to the first issue using the
+ inward description of the issue link type.
+ It will add the supplied comment to the first issue. The comment can have a restriction who can view it.
+ If group is specified, only users of this group can view this comment, if roleLevel is specified only users who have the specified role can view this comment.
+ The user who creates the issue link needs to belong to the specified group or have the specified role.]]></ns2:doc><ns2:request><ns2:representation
+                                mediaType="application/json"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"type":{"name":"Duplicate"},"inwardIssue":{"key":"HSP-1"},"outwardIssue":{"key":"MKY-1"},"comment":{"body":"Linked related issue!","visibility":{"type":"group","value":"jira-users"}}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[If issue linking is disabled or
+      it failed to find one of the issues (issue might exist, but it is not visible for this user) or
+      it failed to find the specified issue link type.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json"
+                        status="200"><ns2:doc><![CDATA[if the issue link was created successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                        status="401"><ns2:doc><![CDATA[if the user does not have the link issue permission for the issue, which will be linked to another issue.]]></ns2:doc></ns2:representation><ns2:representation
+                        status="400"><ns2:doc><![CDATA[if it can't create the supplied comment.
+      The response will contain an error message indicating why it failed to create the comment.
+      No issue link will be created if it failed to create the comment.]]></ns2:doc></ns2:representation><ns2:representation
+            status="500"><ns2:doc><![CDATA[if an error occurred when creating the issue link or the comment.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/filter"><ns2:doc><![CDATA[Resource for searches.]]></ns2:doc><ns2:resource
+                    path="{id}"><ns2:param type="xs:long"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the id of the filter being looked up]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getFilter"><ns2:doc><![CDATA[Returns a filter given an id]]></ns2:doc><ns2:response><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="filter"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/filter/10000","id":"10000","name":"All Open Bugs","description":"A sample filter description","owner":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"},"jql":"type = Bug and resolution is empty","viewUrl":"http://www.example.com/jira/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10000","searchUrl":"http://www.example.com/jira/rest/api/2/search?jql=type%20%3D%20Bug%20and%20resolutino%20is%20empty","favourite":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of a filter]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if there is a problem looking up the filter given the id]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="favourite"><ns2:method name="GET"
+                            id="getFavouriteFilters"><ns2:doc><![CDATA[Returns the favourite filters of the logged-in user.]]></ns2:doc><ns2:response><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="filter"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"self":"http://www.example.com/jira/rest/api/2/filter/10000","id":"10000","name":"All Open Bugs","description":"A sample filter description","owner":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"},"jql":"type = Bug and resolution is empty","viewUrl":"http://www.example.com/jira/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10000","searchUrl":"http://www.example.com/jira/rest/api/2/search?jql=type%20%3D%20Bug%20and%20resolutino%20is%20empty","favourite":true},{"self":"http://www.example.com/jira/rest/api/2/filter/10010","id":"10010","name":"My issues","description":"Issues assigned to me","owner":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","emailAddress":"fred@example.com","avatarUrls":{"16x16":"http://www.example.com/jira/secure/useravatar?size=small&amp;ownerId=fred","48x48":"http://www.example.com/jira/secure/useravatar?size=large&amp;ownerId=fred"},"displayName":"Fred F. User","active":true,"timeZone":"Australia/Sydney","groups":{"size":3,"items":[{"name":"jira-user"},{"name":"jira-admin"},{"name":"important"}]},"expand":"groups"},"jql":"assignee = currentUser() and resolution is empty","viewUrl":"http://www.example.com/jira/secure/IssueNavigator.jspa?mode=hide&amp;requestId=10010","searchUrl":"http://www.example.com/jira/rest/api/2/search?jql=assignee+%3D+currentUser%28%29+and+resolution+is+empty","favourite":true}]</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of a list of filters]]></ns2:doc></ns2:representation><ns2:representation
+            status="400"><ns2:doc><![CDATA[Returned if there is a problem looking up the filter given the id]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/project"><ns2:method name="GET"
+                        id="getAllProjects"><ns2:doc><![CDATA[Returns all projects which are visible for the currently logged in user. If no user is logged in, it returns the
+ list of projects that are visible when using anonymous access.]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="projects"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"self":"http://www.example.com/jira/rest/api/2/project/EX","id":"10000","key":"EX","name":"Example","avatarUrls":{"16x16":"http://www.example.com/jira/secure/projectavatar?size=small&amp;pid=10000","48x48":"http://www.example.com/jira/secure/projectavatar?size=large&amp;pid=10000"}},{"self":"http://www.example.com/jira/rest/api/2/project/ABC","id":"10001","key":"ABC","name":"Alphabetical","avatarUrls":{"16x16":"http://www.example.com/jira/secure/projectavatar?size=small&amp;pid=10001","48x48":"http://www.example.com/jira/secure/projectavatar?size=large&amp;pid=10001"}}]</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a list of projects for which the user has the BROWSE, ADMINISTER or PROJECT_ADMIN project permission.]]></ns2:doc></ns2:representation><ns2:representation
+                status="500"><ns2:doc><![CDATA[Returned if an error occurs while retrieving the list of projects.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{key}"><ns2:param type="xs:string"
+                    style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getProject"><ns2:doc><![CDATA[Contains a full representation of a project in JSON format.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the project is not found, or the calling user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="project"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/project/EX","id":"10000","key":"EX","description":"This project was created as an example for REST.","lead":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"components":[{"self":"http://www.example.com/jira/rest/api/2/component/10000","id":"10000","name":"Component 1","description":"This is a JIRA component","lead":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"assigneeType":"PROJECT_LEAD","assignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"realAssigneeType":"PROJECT_LEAD","realAssignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"isAssigneeTypeValid":false}],"url":"http://www.example.com/jira/browse/EX","assigneeType":"PROJECT_LEAD","versions":[],"name":"Example","roles":{"Developers":"http://www.example.com/jira/rest/api/2/project/EX/role/10000"},"avatarUrls":{"16x16":"http://www.example.com/jira/secure/projectavatar?size=small&amp;pid=10000","48x48":"http://www.example.com/jira/secure/projectavatar?size=large&amp;pid=10000"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project exists and the user has permission to view it. Contains a full representation
+      of a project in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/avatars"><ns2:param type="xs:string"
+                    style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[project key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getAllAvatars"><ns2:doc><![CDATA[Returns all avatars which are visible for the currently logged in user.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have VIEW PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="avatars"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":1000,"owner":"fred","isSystemAvatar":true,"isSelected":true,"selected":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a map containing a list of avatars for both custom an system avatars, which the user has the BROWSE project permission.]]></ns2:doc></ns2:representation><ns2:representation
+                status="500"><ns2:doc><![CDATA[Returned if an error occurs while retrieving the list of avatars.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/avatar"><ns2:param type="xs:string"
+                    style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:method
+                    name="POST"
+                            id="createAvatarFromTemporary"><ns2:doc><![CDATA[Converts temporary avatar into a real avatar]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"needsCropping":false}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have EDIT PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":1000,"owner":"fred","isSystemAvatar":true,"isSelected":true,"selected":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns created avatar]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the cropping coordinates are invalid]]></ns2:doc></ns2:representation><ns2:representation
+                            status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to pick avatar]]></ns2:doc></ns2:representation><ns2:representation
+                    status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateProjectAvatar"><ns2:request><ns2:representation
+                            mediaType="application/json"/></ns2:request><ns2:response><ns2:representation
+                mediaType="application/json"/></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/avatar/temporary"><ns2:param
+                    type="xs:string" style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[Project key]]></ns2:doc></ns2:param><ns2:method
+                    name="POST"
+                            id="storeTemporaryAvatar"><ns2:doc><![CDATA[Creates temporary avatar]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="filename"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[name of file being uploaded]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:long" style="query" name="size"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[size of file]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have EDIT PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"url":"http://example.com/jira/secure/temporaryavatar?cropped=true","needsCropping":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[temporary avatar cropping instructions]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Valiation failed. For example filesize is beyond max attachment size.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="403"><ns2:doc><![CDATA[Returned if the request does not conain a valid XSRF token]]></ns2:doc></ns2:representation><ns2:representation
+                    status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="storeTemporaryAvatarUsingMultiPart"><ns2:doc><![CDATA[Creates temporary avatar using multipart. The response is sent back as JSON stored in a textarea. This is because
+ the client uses remote iframing to submit avatars using multipart. So we must send them a valid HTML page back from
+ which the client parses the JSON from.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="" name="avatar"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[name of file being uploaded]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have EDIT PROJECT permission.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="text/html" status="201"
+                                    element="avatar"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"cropperWidth":120,"cropperOffsetX":50,"cropperOffsetY":50,"url":"http://example.com/jira/secure/temporaryavatar?cropped=true","needsCropping":true}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[temporary avatar cropping instructions embeded in HTML page. Error messages will also be embeded in the page.]]></ns2:doc></ns2:representation><ns2:representation
+                status="500"><ns2:doc><![CDATA[Returned if an error occurs while converting temporary avatar to real avatar]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/avatar/{id}"><ns2:param type="xs:long"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[database id for avatar]]></ns2:doc></ns2:param><ns2:param
+                    type="xs:string" style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[Project key]]></ns2:doc></ns2:param><ns2:method
+                    name="DELETE"
+                            id="deleteAvatar"><ns2:doc><![CDATA[Deletes avatar]]></ns2:doc><ns2:response><ns2:representation
+                            mediaType="application/json"
+                            status="204"><ns2:doc><![CDATA[Returned if the avatar is successfully deleted.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the avatar does not exist or the currently authenticated user does not have permission to
+      delete it.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to delete the component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/versions"><ns2:param type="xs:string"
+                    style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getProjectVersions"><ns2:doc><![CDATA[Contains a full representation of a the specified project's versions.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query" name="expand"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the project is not found, or the calling user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="versions"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","id":"10000","description":"An excellent version","name":"New Version 1","overdue":true,"userReleaseDate":"5/Jul/2010","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project exists and the user has permission to view its versions. Contains a full
+      representation of the project's versions in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{key}/components"><ns2:param type="xs:string"
+                    style="template" name="key"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the project key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getProjectComponents"><ns2:doc><![CDATA[Contains a full representation of a the specified project's components.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the project is not found, or the calling user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="components"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/component/10000","id":"10000","name":"Component 1","description":"This is a JIRA component","lead":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"assigneeType":"PROJECT_LEAD","assignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"realAssigneeType":"PROJECT_LEAD","realAssignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"isAssigneeTypeValid":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the project exists and the user has permission to view its components. Contains a full
+      representation of the project's components in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/issue/{issueIdOrKey}/attachments"><ns2:doc><![CDATA[Issue attachments]]></ns2:doc><ns2:param
+                type="xs:string" style="template" name="issueIdOrKey"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue that you want to add the attachments to]]></ns2:doc></ns2:param><ns2:method
+                name="POST"
+                        id="addAttachment"><ns2:doc><![CDATA[Add one or more attachments to an issue.
+ <p>
+ This resource expects a multipart post. The media-type multipart/form-data is defined in RFC 1867. Most client
+ libraries have classes that make dealing with multipart posts simple. For instance, in Java the Apache HTTP Components
+ library provides a
+ <a href="http://hc.apache.org/httpcomponents-client-ga/httpmime/apidocs/org/apache/http/entity/mime/MultipartEntity.html">MultiPartEntity</a>
+ that makes it simple to submit a multipart POST.
+ <p>
+ In order to protect against XSRF attacks, because this method accepts multipart/form-data, it has XSRF protection
+ on it.  This means you must submit a header of X-Atlassian-Token: nocheck with the request, otherwise it will be
+ blocked.
+ <p>
+     The name of the multipart/form-data parameter that contains attachments must be "file"
+ <p>
+     A simple example to upload a file called "myfile.txt" to issue REST-123:
+     <pre>curl -D- -u admin:admin -X POST -H "X-Atlassian-Token: nocheck" -F "file=@myfile.txt" http://myhost/rest/api/2/issue/TEST-123/attachments</pre>]]></ns2:doc><ns2:request><ns2:param
+                        type="xs:string" style="" name="file"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the files to add]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the requested issue is not found, the user does not have permission to view it, or if the
+      attachments exceeds the maximum configured attachment size.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json"
+                                status="200"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"self":"http://www.example.com/jira/rest/api/2.0/attachments/10000","filename":"picture.jpg","author":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.054-0600","size":23123,"mimeType":"image/jpeg","content":"http://www.example.com/jira/attachments/10000","thumbnail":"http://www.example.com/jira/secure/thumbnail/10000"},{"self":"http://www.example.com/jira/rest/api/2.0/attachments/10001","filename":"dbeuglog.txt","author":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.054-0600","size":2460,"mimeType":"text/plain","content":"http://www.example.com/jira/attachments/10001","thumbnail":"http://www.example.com/jira/secure/thumbnail/10002"}]</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation><ns2:representation
+            status="403"><ns2:doc><![CDATA[Returned if attachments is disabled or if you don't have permission to add attachments to this issue.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/securitylevel"><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an issue security level id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getIssuesecuritylevel"><ns2:doc><![CDATA[Returns a full representation of the issue type that has the given id.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue type does not exist, or is not visible to the calling user.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+            element="issuesecuritylevel"><ns2:doc><![CDATA[Returned if the issue type exists and is visible by the calling user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/priority"><ns2:method name="GET"
+                        id="getPriorities"><ns2:doc><![CDATA[Returns a list of all priorities.]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="list of priorities"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/priority/3","statusColor":"#009900","description":"Major loss of function.","iconUrl":"http://www.example.com/jira/images/icons/priority_major.gif","name":"Major"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the priorities exists and the user has permission to view it. Contains a full representation of
+      the priority in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the priority id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getPriority"><ns2:doc><![CDATA[Returns an issue priority.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue priority does not exist or is not visible to the calling user.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issuePriority"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/priority/3","statusColor":"#009900","description":"Major loss of function.","iconUrl":"http://www.example.com/jira/images/icons/priority_major.gif","name":"Major"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the issue priority exists and is visible by the calling user. Contains a full representation of
+      the issue priority in JSON.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/dashboard"><ns2:doc><![CDATA[The <code>/dashboard</code> resource.]]></ns2:doc><ns2:method
+                name="GET"
+                        id="list"><ns2:doc><![CDATA[Returns a list of all dashboards, optionally filtering them.]]></ns2:doc><ns2:request><ns2:param
+                        type="xs:string" style="query" name="filter"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[an optional filter that is applied to the list of dashboards. Valid values include
+ <code>"favourite"</code> for returning only favourite dashboards, and <code>"my"</code> for returning
+ dashboards that are owned by the calling user.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:int" style="query" name="startAt"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first dashboard to return (0-based). must be 0 or a multiple of
+ <code>maxResults</code>]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:int" style="query" name="maxResults"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a hint as to the the maximum number of dashboards to return in each call. Note that the
+ JIRA server reserves the right to impose a <code>maxResults</code> limit that is lower than the value that a
+ client provides, dues to lack or resources or any other condition. When this happens, your results will be
+ truncated. Callers should always check the returned <code>maxResults</code> to determine the value that is
+ effectively being used.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                                status="200"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"startAt":10,"maxResults":10,"total":143,"prev":"http://www.example.com/jira/rest/api/2/dashboard?startAt=0","next":"http://www.example.com/jira/rest/api/2/dashboard?startAt=10","dashboards":[{"id":"10000","name":"System Dashboard","self":"http://www.example.com/jira/rest/api/2/dashboard/10000","view":"http://www.example.com/jira/secure/Dashboard.jspa?selectPageId=10000"},{"id":"20000","name":"Build Engineering","self":"http://www.example.com/jira/rest/api/2/dashboard/20000","view":"http://www.example.com/jira/secure/Dashboard.jspa?selectPageId=20000"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a list of dashboards.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the dashboard id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getDashboard"><ns2:doc><![CDATA[Returns a single dashboard.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if there is no dashboard with the specified id, or if the user does not have permission to see it.]]></ns2:doc></ns2:representation><ns2:representation
+                                    status="200"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":"10000","name":"System Dashboard","self":"http://www.example.com/jira/rest/api/2/dashboard/10000","view":"http://www.example.com/jira/secure/Dashboard.jspa?selectPageId=10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a single dashboard.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/status"><ns2:method name="GET"
+                        id="getStatuses"><ns2:doc><![CDATA[Returns a list of all statuses]]></ns2:doc><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the requested issue status is not found, or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="statuses"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"self":"http://localhost:8090/jira/rest/api/2.0/status/10000","description":"The issue is currently being worked on.","iconUrl":"http://localhost:8090/jira/images/icons/progress.gif","name":"In Progress","id":"10000"},{"self":"http://localhost:8090/jira/rest/api/2.0/status/5","description":"The issue is closed.","iconUrl":"http://localhost:8090/jira/images/icons/closed.gif","name":"Closed","id":"5"}]</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a list of all JIRA issue statuses in JSON format, that are visible to the user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{idOrName}"><ns2:param type="xs:string"
+                    style="template" name="idOrName"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a numeric Status id or a status name]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getStatus"><ns2:doc><![CDATA[Returns a full representation of the Status having the given id or name.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested issue status is not found, or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="status"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://localhost:8090/jira/rest/api/2.0/status/10000","description":"The issue is currently being worked on.","iconUrl":"http://localhost:8090/jira/images/icons/progress.gif","name":"In Progress","id":"10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA issue status in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/issueLinkType"><ns2:doc><![CDATA[Rest resource to retrieve a list of issue link types.]]></ns2:doc><ns2:method
+                name="GET"
+                        id="getIssueLinkTypes"><ns2:doc><![CDATA[Returns a list of available issue link types, if issue linking is enabled.
+ Each issue link type has an id, a name and a label for the outward and inward link relationship.]]></ns2:doc><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if issue linking is disabled.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="issueLinkTypes"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"issueLinkTypes":[{"id":"1000","name":"Duplicate","inward":"Duplicated by","outward":"Duplicates","self":"http://www.example.com/jira/rest/api/2//issueLinkType/1000"},{"id":"1010","name":"Blocks","inward":"Blocked by","outward":"Blocks","self":"http://www.example.com/jira/rest/api/2//issueLinkType/1010"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a list of all available issue link types.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="/{issueLinkTypeId}"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueLinkTypeId"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:method
+                    name="GET"
+                            id="getIssueLinkType"><ns2:doc><![CDATA[Returns for a given issue link type id all information about this issue link type.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if issue linking is disabled or no issue link type with the given id exists.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issueLinkType"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":"1000","name":"Duplicate","inward":"Duplicated by","outward":"Duplicates","self":"http://www.example.com/jira/rest/api/2//issueLinkType/1000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns the issue link type with the given id.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/component"><ns2:method name="POST"
+                        id="createComponent"><ns2:doc><![CDATA[Create a component via POST. Any fields present in the PUT will override existing values. As a convenience, if a field
+ is not present, it is silently ignored.]]></ns2:doc><ns2:request><ns2:representation
+                                mediaType="application/json"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"name":"Component 1","description":"This is a JIRA component","leadUserName":"fred","assigneeType":"PROJECT_LEAD","isAssigneeTypeValid":false,"project":"PXA"}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the component does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json"
+                                status="201"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/component/10000","id":"10000","name":"Component 1","description":"This is a JIRA component","lead":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"assigneeType":"PROJECT_LEAD","assignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"realAssigneeType":"PROJECT_LEAD","realAssignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"isAssigneeTypeValid":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the component is created successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to edit the component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:method
+                    name="DELETE"
+                            id="delete"><ns2:doc><![CDATA[Delete a project component.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="moveIssuesTo"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[The new component applied to issues whose 'id' component will be deleted.
+ If this value is null, then the 'id' component is simply deleted.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the component is successfully deleted.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the component does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to delete the component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="GET"
+                            id="getComponent"><ns2:doc><![CDATA[Returns a project component.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if there is no component with the given key, or if the calling user does not have permission to
+      view the component.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="component"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/component/10000","id":"10000","name":"Component 1","description":"This is a JIRA component","lead":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"assigneeType":"PROJECT_LEAD","assignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"realAssigneeType":"PROJECT_LEAD","realAssignee":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"isAssigneeTypeValid":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full JSON representation of a project component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateComponent"><ns2:doc><![CDATA[Modify a component via PUT. Any fields present in the PUT will override existing values. As a convenience, if a field
+ is not present, it is silently ignored.
+
+ If leadUserName is an empty string ("") the component lead will be removed.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"name":"Component 1","description":"This is a JIRA component","leadUserName":"fred","assigneeType":"PROJECT_LEAD","isAssigneeTypeValid":false}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the component does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="200"><ns2:doc><![CDATA[Returned if the component exists and the currently authenticated user has permission to edit it.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to edit the component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{id}/relatedIssueCounts"><ns2:param
+                    type="xs:string" style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the component id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getComponentRelatedIssues"><ns2:doc><![CDATA[Returns a project component.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the component does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issue Count Bean"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/component/10000","issueCount":23}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the component exists and the currently authenticated user has permission to view it. Contains
+      counts of issues fixed in and affecting this component.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/version"><ns2:method name="POST"
+                        id="createVersion"><ns2:doc><![CDATA[Create a version via POST.]]></ns2:doc><ns2:request><ns2:representation
+                                mediaType="application/json"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"description":"An excellent version","name":"New Version 1","userReleaseDate":"5/Jul/2010","project":"PXA","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                        status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                        mediaType="application/json"
+                                status="201"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"description":"An excellent version","name":"New Version 1","userReleaseDate":"5/Jul/2010","project":"PXA","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the version is created successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to edit the version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"/><ns2:method
+                    name="DELETE"
+                            id="delete"><ns2:doc><![CDATA[Delete a project version.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="moveFixIssuesTo"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[The version to set fixVersion to on issues where the deleted version is the fix version,
+ If null then the fixVersion is removed.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="moveAffectedIssuesTo"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[The version to set affectedVersion to on issues where the deleted version is the affected version,
+ If null then the affectedVersion is removed.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the version is successfully deleted.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to delete the version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="GET"
+                            id="getVersion"><ns2:doc><![CDATA[Returns a project version.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query" name="expand"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="project"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","id":"10000","description":"An excellent version","name":"New Version 1","overdue":true,"userReleaseDate":"5/Jul/2010","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the version exists and the currently authenticated user has permission to view it. Contains a
+      full representation of the version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateVersion"><ns2:doc><![CDATA[Modify a version via PUT. Any fields present in the PUT will override existing values. As a convenience, if a field
+ is not present, it is silently ignored.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","id":"10000","description":"An excellent version","name":"New Version 1","overdue":true,"userReleaseDate":"5/Jul/2010","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="200"><ns2:doc><![CDATA[Returned if the version exists and the currently authenticated user has permission to edit it.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the currently authenticated user does not have permission to edit the version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{id}/relatedIssueCounts"><ns2:param
+                    type="xs:string" style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the version id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getVersionRelatedIssues"><ns2:doc><![CDATA[Returns a bean containing the number of fixed in and affected issues for the given version.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issue Count Bean"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","issuesFixedCount":23,"issuesAffectedCount":101}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the version exists and the currently authenticated user has permission to view it. Contains
+      counts of issues fixed in and affecting this version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{id}/unresolvedIssueCount"><ns2:param
+                    type="xs:string" style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the version id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getVersionUnresolvedIssues"><ns2:doc><![CDATA[Returns the number of unresolved issues for the given version]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version does not exist or the currently authenticated user does not have permission to
+      view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issuesUnresolvedCount"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","issuesUnresolvedCount":23}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the version exists and the currently authenticated user has permission to view it. Contains
+      counts of issues unresolved in this version.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="/{id}/move"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the version id]]></ns2:doc></ns2:param><ns2:method
+                    name="POST"
+                            id="moveVersion"><ns2:doc><![CDATA[Modify a version's sequence within a project.
+
+ The move version bean has 2 alternative field value pairs:
+ <dl>
+     <dt>position</dt><dd>An absolute position, which may have a value of 'First', 'Last', 'Earlier' or 'Later'</dd>
+     <dt>after</dt><dd>A version to place this version after.  The value should be the self link of another version</dd>
+ </dl>]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"after":"http://www.example.com/jira/rest/api/2/version/10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the version, or target of the version to move after does not exist or the currently authenticated
+      user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="project version"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/version/10000","id":"10000","description":"An excellent version","name":"New Version 1","overdue":true,"userReleaseDate":"5/Jul/2010","releaseDate":"2010-07-05","released":true,"archived":false}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the version exists and the currently authenticated user has permission to view it. Contains a
+      full representation of the version moved.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/attachment"><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the id of the attachment to ddelete.]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getAttachment"><ns2:doc><![CDATA[Returns the meta-data for an attachment, including the URI of the actual attached file.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the attachment with the given id does not exist, or is not accessible by the calling user.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="attachment"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/attachments/10000","filename":"picture.jpg","author":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.054-0600","size":23123,"mimeType":"image/jpeg","content":"http://www.example.com/jira/attachments/10000","thumbnail":"http://www.example.com/jira/secure/thumbnail/10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of the attachment meta-data. The representation does not contain the
+      attachment itself, but contains a URI that can be used to download the actual attached file.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="removeAttachment"><ns2:doc><![CDATA[Remove an attachment from an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if successful.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the attachment is not found]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if attachments is disabled or if you don't have permission to remove attachments from this issue.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="meta"><ns2:method name="GET"
+                            id="getAttachmentMeta"><ns2:doc><![CDATA[Returns the meta-data for an attachment, including the URI of the actual attached file.]]></ns2:doc><ns2:response><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="attachmentMeta"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"enabled":true,"uploadLimit":1000000}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of the attachment capabilities.
+      Consumers of this resource may also need to check if the logged in user has permission to upload or
+      otherwise manipulate attachments using the {@link com.atlassian.jira.rest.v2.permission.PermissionsResource}.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/search"><ns2:doc><![CDATA[Resource for searches.]]></ns2:doc><ns2:method
+                name="GET"
+                        id="search"><ns2:doc><![CDATA[Searches for issues using JQL.
+
+ <p><b>Sorting</b>
+  the <code>jql</code> parameter is a full <a href="http://confluence.atlassian.com/display/JIRA/Advanced+Searching">JQL</a>
+  expression, and includes an <code>ORDER BY</code> clause.
+ </p>
+
+ <p>
+  The <code>fields</code> param (which can be specified multiple times) gives a comma-separated list of fields
+  to include in the response. This can be used to retrieve a subset of fields.
+  A particular field can be excluded by prefixing it with a minus.
+  <p>
+   By default, only navigable (<code>*navigable</code>) fields are returned in this search resource. Note: the default is different
+   in the get-issue resource -- the default there all fields (<code>*all</code>).
+  <ul>
+      <li><code>*all</code> - include all fields</li>
+      <li><code>*navigable</code> - include just navigable fields</li>
+      <li><code>summary,comment</code> - include just the summary and comments</li>
+      <li><code>-description</code> - include navigable fields except the description (the default is <code>*navigable</code> for search)</li>
+      <li><code>*all,-comment</code> - include everything except comments</li>
+  </ul>
+
+ </p>
+ <p><b>GET vs POST:</b>
+  If the JQL query is too large to be encoded as a query param you should instead
+  POST to this resource.
+ </p>]]></ns2:doc><ns2:request><ns2:param
+                        type="xs:string" style="query" name="jql"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a JQL query string]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:int" style="query" name="startAt"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the index of the first issue to return (0-based)]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:int" style="query" name="maxResults"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the maximum number of issues to return (defaults to 50). The maximum allowable value is
+ dictated by the JIRA property 'jira.search.views.default.max'. If you specify a value that is higher than this
+ number, your search results will be truncated.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:string" style="query" name="fields"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the list of fields to return for each issue. By defailt, all navigable fields are returned.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:string" style="query" name="expand"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the parameters to expand]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="searchResults"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"expand":"names,schema","startAt":0,"maxResults":50,"total":1,"issues":[{"expand":"","id":"10001","self":"http://www.example.com/jira/rest/api/2/issue/10001","key":"HSP-1","changelog":"TODO"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of the search results.]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if there is a problem with the JQL query.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                name="POST"
+                        id="searchUsingSearchRequest"><ns2:doc><![CDATA[Performs a search using JQL.]]></ns2:doc><ns2:request><ns2:representation
+                        mediaType="application/json"
+                                element="searchRequest"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"jql":"project = HSP","startAt":0,"maxResults":15,"fields":["summary","status","assignee"]}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="searchResults"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"expand":"names,schema","startAt":0,"maxResults":50,"total":1,"issues":[{"expand":"","id":"10001","self":"http://www.example.com/jira/rest/api/2/issue/10001","key":"HSP-1","changelog":"TODO"}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a JSON representation of the search results.]]></ns2:doc></ns2:representation><ns2:representation
+            status="400"><ns2:doc><![CDATA[Returned if there is a problem with the JQL query.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/issue"><ns2:method name="POST"
+                        id="createIssue"><ns2:doc><![CDATA[Creates an issue from a JSON representation.]]></ns2:doc><ns2:request><ns2:representation
+                                mediaType="application/json"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"update":{"worklog":[{"add":{"started":"2011-07-05T11:05:00.000+0000","timeSpent":"60m"}}]},"fields":{"project":{"id":"10000"},"summary":"something's wrong","issuetype":{"id":"10000"},"assignee":{"name":"homer"},"reporter":{"name":"smithers"},"priority":{"id":"20000"},"labels":["bugfix","blitz_test"],"timetracking":{"originalEstimate":"10","remainingEstimate":"5"},"security":{"id":"10000"},"versions":[{"id":"10000"}],"environment":"environment","description":"description","duedate":"2011-03-11","fixVersions":[{"id":"10001"}],"components":[{"id":"10000"}],"customfield_60000":"jira-developers","customfield_20000":"06/Jul/11 3:25 PM","customfield_40000":"this is a text field","customfield_30000":["10000","10002"],"customfield_70000":["jira-administrators","jira-users"],"customfield_50000":"this is a text area. big text.","customfield_10000":"09/Jun/81"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="issue"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":"10000","key":"TST-24","self":"http://www.example.com/jira/rest/api/2/issue/10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a link to the created issue.]]></ns2:doc></ns2:representation><ns2:representation
+                                status="400"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"errorMessages":["Field 'priority' is required"],"errors":{}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid field values, and so forth).]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{issueIdOrKey}/comment"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a string containing the issue id or key the comment will be added to]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getComments"><ns2:doc><![CDATA[Returns all comments for an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue with the given id/key does not exist or if the currently authenticated user does not
+      have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"startAt":0,"maxResults":1,"total":1,"comments":[{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[returns a collection of comments associated with the issue, with count and pagination information.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="addComment"><ns2:doc><![CDATA[Adds a new comment to an issue.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                                    status="201"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if add was successful]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/comment/{id}"><ns2:param
+                    type="xs:string" style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[id of the comment to be deleted]]></ns2:doc></ns2:param><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a string containing the issue id or key the comment belongs to]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getComments"><ns2:doc><![CDATA[Returns all comments for an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue with the given id/key does not exist or if the currently authenticated user does not
+      have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"startAt":0,"maxResults":1,"total":1,"comments":[{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[returns a collection of comments associated with the issue, with count and pagination information.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateComment"><ns2:doc><![CDATA[Updates an existing comment using its JSON representation.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                                    status="200"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if update was successful]]></ns2:doc></ns2:representation><ns2:representation
+                    status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="deleteComment"><ns2:doc><![CDATA[Deletes an existing comment .]]></ns2:doc><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if delete was successful]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/assignee"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an issue key]]></ns2:doc></ns2:param><ns2:method
+                    name="PUT"
+                            id="assign"><ns2:doc><![CDATA[Assigns an issue to a user.
+ You can use this resource to assign issues when the user submitting the request has the assign permission but not the
+ edit issue permission.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"name":"harry"}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the issue is successfully assigned.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if either the issue or the user does not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user does not have permission to assign the issue.]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if there is a problem with the received user representation.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="/{issueIdOrKey}"><ns2:param type="xs:string"
+                    style="template" name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue id or key to update (i.e. JRA-1330)]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getIssue"><ns2:doc><![CDATA[Returns a full representation of the issue for the given issue key.
+
+ <p>
+  An issue JSON consists of the issue key, a collection of fields,
+  a link to the workflow transition sub-resource, and (optionally) the HTML rendered values of any fields that support it
+  (e.g. if wiki syntax is enabled for the description or comments).
+
+  <p>
+  The <code>fields</code> param (which can be specified multiple times) gives a comma-separated list of fields
+  to include in the response. This can be used to retrieve a subset of fields.
+  A particular field can be excluded by prefixing it with a minus.
+  <p>
+   By default, all (<code>*all</code>) fields are returned in this get-issue resource. Note: the default is different
+   when doing a jql search -- the default there is just navigable fields (<code>*navigable</code>).
+  <ul>
+      <li><code>*all</code> - include all fields</li>
+      <li><code>*navigable</code> - include just navigable fields</li>
+      <li><code>summary,comment</code> - include just the summary and comments</li>
+      <li><code>-comment</code> - include everything except comments (the default is <code>*all</code> for get-issue)</li>
+      <li><code>*all,-comment</code> - include everything except comments</li>
+  </ul>]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query" name="fields"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the list of fields to return for the issue. By default, all fields are returned.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query" name="expand"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested issue is not found, or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="issue"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"expand":"renderedFields,names,schema,transitions,editmeta","id":"10002","self":"http://www.example.com/jira/rest/api/2/issue/10002","key":"EX-1","fields":{"sub-tasks":[{"type":{"id":"10000","name":"","inward":"Parent","outward":"Sub-task"},"outwardIssue":{"id":"10003","key":"EX-2","self":"http://www.example.com/jira/rest/api/2/issue/EX-2","fields":{"status":{"iconUrl":"http://www.example.com/jira//images/icons/status_open.gif","name":"Open"}}}}],"timetracking":{"timeoriginalestimate":10,"timeestimate":3,"timespent":6},"project":{"self":"http://www.example.com/jira/rest/api/2/project/EX","id":"10000","key":"EX","name":"Example","avatarUrls":{"16x16":"http://www.example.com/jira/secure/projectavatar?size=small&amp;pid=10000","48x48":"http://www.example.com/jira/secure/projectavatar?size=large&amp;pid=10000"}},"updated":1,"description":"example bug report","issuelinks":[{"type":{"id":"10000","name":"Dependent","inward":"depends on","outward":"is depended by"},"outwardIssue":{"id":"10004L","key":"PRJ-2","self":"http://www.example.com/jira/rest/api/2/issue/PRJ-2","fields":{"status":{"iconUrl":"http://www.example.com/jira//images/icons/status_open.gif","name":"Open"}}}},{"type":{"id":"10000","name":"Dependent","inward":"depends on","outward":"is depended by"},"inwardIssue":{"id":"10004","key":"PRJ-3","self":"http://www.example.com/jira/rest/api/2/issue/PRJ-3","fields":{"status":{"iconUrl":"http://www.example.com/jira//images/icons/status_open.gif","name":"Open"}}}}],"attachment":[{"self":"http://www.example.com/jira/rest/api/2.0/attachments/10000","filename":"picture.jpg","author":{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.054-0600","size":23123,"mimeType":"image/jpeg","content":"http://www.example.com/jira/attachments/10000","thumbnail":"http://www.example.com/jira/secure/thumbnail/10000"}],"watcher":{"self":"http://www.example.com/jira/rest/api/2/issue/EX-1/watchers","isWatching":false,"watchCount":1,"watchers":[{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false}]},"comment":[{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/comment/10000","id":"10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.","updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"created":"2011-11-10T05:57:31.222-0600","updated":"2011-11-10T05:57:31.222-0600","visibility":{"type":"role","value":"Administrators"}}],"worklog":[{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}]},"names":{"sub-tasks":"sub-tasks","timetracking":"timetracking","project":"project","updated":"updated","description":"description","issuelinks":"issuelinks","attachment":"attachment","watcher":"watcher","comment":"comment","worklog":"worklog"},"schema":{},"changelog":"TODO"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of a JIRA issue in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="editIssue"><ns2:doc><![CDATA[Edits an issue from a JSON representation.
+ The issue can either be updated by setting explicit the field value(s)
+ or by using an operation to change the field value.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"update":{"summary":[{"set":"Bug in business logic"}],"labels":[{"add":"triaged"},{"remove":"blocker"}],"components":[{"set":""}]}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            mediaType="application/json"
+                            status="200"><ns2:doc><![CDATA[Returned if it updated the issue succesfully.]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[Returned if the requested issue update failed.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="/{issueIdOrKey}/transitions"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue you want to transition]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getTransitions"><ns2:doc><![CDATA[Get a list of the transitions possible for this issue by the current user, along with fields that are required and their types.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="transitionId"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"/></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested issue is not found or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"731":{"id":"2","name":"Close Issue","to":{"self":"http://localhost:8090/jira/rest/api/2.0/status/10000","description":"The issue is currently being worked on.","iconUrl":"http://localhost:8090/jira/images/icons/progress.gif","name":"In Progress","id":"10000"},"fields":{"summary":{"required":false,"schema":{"type":"array","items":"option","custom":"com.atlassian.jira.plugin.system.customfieldtypes:multiselect","customId":10001},"operations":["set","add"],"allowedValues":["red","blue"]}}}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of the transitions possible for the specified issue and the fields required to perform the transition.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="doTransition"><ns2:doc><![CDATA[Perform a transition on an issue.
+ When performing the transition you can udate or set other issue fields.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"update":{"comment":[{"add":{"body":"Bug has been fixed."}}]},"fields":{"assignee":{"name":"bob"},"resolution":{"name":"Fixed"}},"transition":{"id":"5"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the transition was successful.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[The issue does not exist or the user does not have permission to view it]]></ns2:doc></ns2:representation><ns2:representation
+                status="400"><ns2:doc><![CDATA[If there is no transition specified.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/votes"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue to view voting information for]]></ns2:doc></ns2:param><ns2:method
+                    name="DELETE"
+                            id="removeVote"><ns2:doc><![CDATA[Remove your vote from an issue. (i.e. "unvote")]]></ns2:doc><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Nothing is returned on success.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="404"><ns2:doc><![CDATA[Returned if the user cannot remove a vote for any reason. (The user did not vote on the issue,
+      the user is the reporter, voting is disabled, the issue does not exist, etc.)]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="addVote"><ns2:doc><![CDATA[Cast your vote in favour of an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Nothing is returned on success.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="404"><ns2:doc><![CDATA[Returned if the user cannot vote for any reason. (The user is the reporter, the user does
+      not have permission to vote, voting is disabled in the instance, the issue does not exist, etc.)]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="GET"
+                            id="getVotes"><ns2:doc><![CDATA[A REST sub-resource representing the voters on the issue. This sub-resource is also used for voting
+ and unvoting (via POST and DELETE).]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the user cannot view the issue in question or voting is disabled.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/issue/MKY-1/votes","votes":24,"hasVoted":true,"voters":[{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Information about voting on the current issue.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/watchers"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an issue key]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getIssueWatchers"><ns2:doc><![CDATA[Returns the list of watchers for the issue with the given key.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested issue is not found, or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="watchers"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/issue/EX-1/watchers","isWatching":false,"watchCount":1,"watchers":[{"self":"http://www.example.com/jira/rest/api/2/user?username=fred","name":"fred","displayName":"Fred F. User","active":false}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns the list of watchers for an issue.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="addWatcher"><ns2:doc><![CDATA[Adds a user to an issue's watcher list.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>"fred"</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the watcher was added successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if either the issue or the user does not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user does not have permission to add the watcher to the issue's list of watchers.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="400"><ns2:doc><![CDATA[Returned if there is a problem with the received user representation.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="removeWatcher"><ns2:doc><![CDATA[Removes a user from an issue's watcher list.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="username"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the name of the user to remove from the watcher list]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the watcher was removed successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if either the issue or the user does not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                status="401"><ns2:doc><![CDATA[Returned if the calling user does not have permission to remove the watcher from the issue's list of
+      watchers.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}"><ns2:param type="xs:string"
+                    style="template" name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing an issue id or key]]></ns2:doc></ns2:param><ns2:method
+                    name="DELETE"
+                            id="deleteIssue"><ns2:doc><![CDATA[Delete an issue.
+
+ If the issue has subtasks you must set the parameter deleteSubtasks=true to delete the issue.
+ You cannot delete an issue without its subtasks also being deleted.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="deleteSubtasks"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String of true or false indicating that any subtasks should also be deleted.  If the
+ issue has no subtasks this parameter is ignored.  If the issue has subtasks and this parameter is missing or false,
+ then the issue will not be deleted and an error will be returned.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the issue was removed successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue does not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to delete the issue.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="/createmeta"><ns2:method name="GET"
+                            id="getCreateIssueMeta"><ns2:doc><![CDATA[Returns the meta data for creating issues. This includes the available projects, issue types and fields,
+ including field types and whether or not those fields are required.
+ Projects will not be returned if the user does not have permission to create issues in that project.
+
+ <p>
+ Fields will only be returned if <code>expand=projects.issuetypes.fields</code>.
+ <p>
+ The results can be filtered by project and/or issue type, given by the query params.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="projectIds"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[combined with the projectKeys param, lists the projects with which to filter the results. If absent, all projects are returned.
+  This parameter can be specified multiple times, and/or be a comma-separated list.
+  Specifiying a project that does not exist (or that you cannot create issues in) is not an error, but it will not be in the results.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="projectKeys"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[combined with the projectIds param, lists the projects with which to filter the results. If null, all projects are returned.
+  This parameter can be specified multiple times, and/or be a comma-separated list.
+  Specifiying a project that does not exist (or that you cannot create issues in) is not an error, but it will not be in the results.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="issuetypeIds"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[combinded with issuetypeNames, lists the issue types with which to filter the results. If null, all issue types are returned.
+  This parameter can be specified multiple times, and/or be a comma-separated list.
+  Specifiying an issue type that does not exist is not an error.]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="issuetypeNames"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[combinded with issuetypeIds, lists the issue types with which to filter the results. If null, all issue types are returned.
+  This parameter can be specified multiple times, but is NOT interpreted as a comma-separated list.
+  Specifiying an issue type that does not exist is not an error.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"expand":"projects","projects":[{"self":"http://www.example.com/jira/rest/api/2/project/EX","id":"10000","key":"EX","name":"Example Project","avatarUrls":{"16x16":"http://www.example.com/jira/secure/projectavatar?size=small&amp;pid=10000&amp;avatarId=10011","48x48":"http://www.example.com/jira/secure/projectavatar?pid=10000&amp;avatarId=10011"},"issuetypes":[{"self":"http://www.example.com/jira/rest/api/2/issueType/1","id":"1","description":"An error in the code","iconUrl":"http://www.example.com/jira/images/icons/bug.gif","name":"Bug","fields":{"issuetype":{"required":true,"operations":["set"]}},"subtask":false}]}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns the meta data for creating issues.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the user does not have permission to view any of the requested projects.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="/{issueIdOrKey}/editmeta"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue whose edit meta data you want to view]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getEditIssueMeta"><ns2:doc><![CDATA[Returns the meta data for editing an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the requested issue is not found or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"fields":{"summary":{"required":false,"schema":{"type":"array","items":"option","custom":"com.atlassian.jira.plugin.system.customfieldtypes:multiselect","customId":10001},"operations":["set","add"],"allowedValues":["red","blue"]}}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a response containing a Map of FieldBeans for fields edited by the current user.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/remotelink"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue to create the remote issue link for]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getRemoteIssueLinks"><ns2:doc><![CDATA[A REST sub-resource representing the remote issue links on the issue. This sub-resource is also used for creating,
+ updating and deleting links (via POST, PUT and DELETE).]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="globalId"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[if not null, return only the remote issue link with this globalId]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue or remote issue link do not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"id":10000,"self":"http://www.example.com/jira/rest/api/issue/MKY-1/remotelink/10000","globalId":"system=http://www.mycompany.com/support&amp;id=1","application":{"type":"com.acme.tracker","name":"My Acme Tracker"},"relationship":"causes","object":{"url":"http://www.mycompany.com/support?id=1","title":"TSTSUP-111","summary":"Crazy customer support issue","icon":{"url16x16":"http://www.mycompany.com/support/ticket.png","title":"Support Ticket"},"status":{"resolved":true,"icon":{"url16x16":"http://www.mycompany.com/support/resolved.png","title":"Case Closed","link":"http://www.mycompany.com/support?id=1&amp;details=closed"}}}},{"id":10001,"self":"http://www.example.com/jira/rest/api/issue/MKY-1/remotelink/10001","globalId":"system=http://www.anothercompany.com/tester&amp;id=1234","application":{"type":"com.acme.tester","name":"My Acme Tester"},"relationship":"is tested by","object":{"url":"http://www.anothercompany.com/tester/testcase/1234","title":"Test Case #1234","summary":"Test that the submit button saves the thing","icon":{"url16x16":"http://www.anothercompany.com/tester/images/testcase.gif","title":"Test Case"},"status":{"resolved":false,"icon":{"url16x16":"http://www.anothercompany.com/tester/images/person/fred.gif","title":"Tested by Fred Jones","link":"http://www.anothercompany.com/tester/person?username=fred"}}}}]</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Information on the remote issue links for the current issue.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to view the remote issue links, or if issue linking is
+      disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="createOrUpdateRemoteIssueLink"><ns2:doc><![CDATA[Creates or updates a remote issue link from a JSON representation. If a globalId is provided and a remote issue link
+ exists with that globalId, the remote issue link is updated. Otherwise, the remote issue link is created.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"globalId":"system=http://www.mycompany.com/support&amp;id=1","application":{"type":"com.acme.tracker","name":"My Acme Tracker"},"relationship":"causes","object":{"url":"http://www.mycompany.com/support?id=1","title":"TSTSUP-111","summary":"Crazy customer support issue","icon":{"url16x16":"http://www.mycompany.com/support/ticket.png","title":"Support Ticket"},"status":{"resolved":true,"icon":{"url16x16":"http://www.mycompany.com/support/resolved.png","title":"Case Closed","link":"http://www.mycompany.com/support?id=1&amp;details=closed"}}}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="remote issue link"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":10000,"self":"http://www.example.com/jira/rest/api/issue/MKY-1/remotelink/10000"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a link to the created/updated remote issue link.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                                    status="400"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"errorMessages":[],"errors":{"title":"'title' is required."}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to create/update the remote issue link, or if issue linking
+      is disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="deleteRemoteIssueLinkByGlobalId"><ns2:doc><![CDATA[Delete the remote issue link with the given global id on the issue.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="globalId"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the global id of the remote issue link]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the remote issue link was removed successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue or remote issue link do not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to delete the remote issue link, or if issue linking is
+      disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/remotelink/{linkId}"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the issue to create the remote issue link for]]></ns2:doc></ns2:param><ns2:param
+                    type="xs:string" style="template" name="linkId"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[the id of the remote issue link]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getRemoteIssueLinkById"><ns2:doc><![CDATA[Get the remote issue link with the given id on the issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue or remote issue link do not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"id":10000,"self":"http://www.example.com/jira/rest/api/issue/MKY-1/remotelink/10000","globalId":"system=http://www.mycompany.com/support&amp;id=1","application":{"type":"com.acme.tracker","name":"My Acme Tracker"},"relationship":"causes","object":{"url":"http://www.mycompany.com/support?id=1","title":"TSTSUP-111","summary":"Crazy customer support issue","icon":{"url16x16":"http://www.mycompany.com/support/ticket.png","title":"Support Ticket"},"status":{"resolved":true,"icon":{"url16x16":"http://www.mycompany.com/support/resolved.png","title":"Case Closed","link":"http://www.mycompany.com/support?id=1&amp;details=closed"}}}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Information on the remote issue link with the given id.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the linkId is not a valid number, or if the remote issue link with the given id does not belong to
+      the given issue.]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to view the remote issue link, or if issue linking is
+      disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateRemoteIssueLink"><ns2:doc><![CDATA[Updates a remote issue link from a JSON representation. Any fields not provided are set to null.]]></ns2:doc><ns2:request><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"globalId":"system=http://www.mycompany.com/support&amp;id=1","application":{"type":"com.acme.tracker","name":"My Acme Tracker"},"relationship":"causes","object":{"url":"http://www.mycompany.com/support?id=1","title":"TSTSUP-111","summary":"Crazy customer support issue","icon":{"url16x16":"http://www.mycompany.com/support/ticket.png","title":"Support Ticket"},"status":{"resolved":true,"icon":{"url16x16":"http://www.mycompany.com/support/resolved.png","title":"Case Closed","link":"http://www.mycompany.com/support?id=1&amp;details=closed"}}}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the remote issue link was updated successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                                    status="400"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"errorMessages":[],"errors":{"title":"'title' is required."}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to update the remote issue link, or if issue linking is
+      disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="deleteRemoteIssueLinkById"><ns2:doc><![CDATA[Delete the remote issue link with the given id on the issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if the remote issue link was removed successfully.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue or remote issue link do not exist.]]></ns2:doc></ns2:representation><ns2:representation
+                            status="401"><ns2:doc><![CDATA[Returned if the calling user is not authenticated.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to delete the remote issue link, or if issue linking is
+      disabled.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/worklog"><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a string containing the issue id or key the worklog will be added to]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getIssueWorklog"><ns2:doc><![CDATA[Returns all work logs for an issue.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the issue with the given id/key does not exist or if the currently authenticated user does not
+      have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json"
+                                    status="200"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"startAt":0,"maxResults":1,"total":1,"worklogs":[{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}]}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[returns a collection of worklogs associated with the issue, with count and pagination information.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="POST"
+                            id="addWorklog"><ns2:doc><![CDATA[Adds a new worklog entry to an issue.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="adjustEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(optional) allows you to provide specific instructions to update the remaining time estimate of the issue.  Valid values are
+      "new" - sets the estimate to a specific value
+      "leave"- leaves the estimate as is
+      "manual" - specify a specific amount to increase remaining estimate by
+      "auto"- Default option.  Will automatically adjust the value based on the new timeSpent specified on the worklog]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="newEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(required when "new" is selected for adjustEstimate) the new value for the remaining estimate field. e.g. "2d"]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="reduceBy"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(required when "manual" is selected for adjustEstimate) the amount to reduce the remaining estimate by e.g. "2d"]]></ns2:doc></ns2:param><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                            status="201"><ns2:doc><![CDATA[Returned if add was successful]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to add the worklog]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                    path="{issueIdOrKey}/worklog/{id}"><ns2:param
+                    type="xs:string" style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[id of the worklog to be deleted]]></ns2:doc></ns2:param><ns2:param
+                    type="xs:string" style="template"
+                    name="issueIdOrKey"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a string containing the issue id or key the worklog belongs to]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getWorklog"><ns2:doc><![CDATA[Returns a specific worklog.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the work log with the given id does not exist or if the currently authenticated user does not
+      have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="worklog"><ns2:doc><ns3:p
+                    xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the work log with the given id exists and the currently authenticated user has permission to
+      view it. The returned response contains a full representation of the work log in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="PUT"
+                            id="updateWorklog"><ns2:doc><![CDATA[Updates an existing worklog entry using its JSON representation.]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="adjustEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(optional) allows you to provide specific instructions to update the remaining time estimate of the issue.  Valid values are
+      "new" - sets the estimate to a specific value
+      "leave"- leaves the estimate as is
+      "auto"- Default option.  Will automatically adjust the value based on the new timeSpent specified on the worklog]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="newEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(required when "new" is selected for adjustEstimate) the new value for the remaining estimate field.]]></ns2:doc></ns2:param><ns2:representation
+                                    mediaType="application/json"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                                    status="200"><ns2:doc><ns3:p
+                            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/issue/10010/worklog/10000","author":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"updateAuthor":{"self":"http://www.example.com/jira/rest/api/2.0/user?username=fred","name":"fred","displayName":"Fred F. User","active":false},"comment":"I did some work here.","started":"2011-11-10T05:57:31.351-0600","timeSpent":"3h 20m","id":"100028","visibility":{"type":"group","value":"jira-developers"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if update was successful]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation><ns2:representation
+                    status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to update the worklog]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                    name="DELETE"
+                            id="deleteWorklog"><ns2:doc><![CDATA[Deletes an existing worklog entry .]]></ns2:doc><ns2:request><ns2:param
+                            type="xs:string" style="query"
+                            name="adjustEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(optional) allows you to provide specific instructions to update the remaining time estimate of the issue.  Valid values are
+      "new" - sets the estimate to a specific value
+      "leave"- leaves the estimate as is
+      "manual" - specify a specific amount to increase remaining estimate by
+      "auto"- Default option.  Will automatically adjust the value based on the new timeSpent specified on the worklog]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="newEstimate"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(required when "new" is selected for adjustEstimate) the new value for the remaining estimate field. e.g. "2d"]]></ns2:doc></ns2:param><ns2:param
+                            type="xs:string" style="query"
+                            name="increaseBy"
+                            xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[(required when "manual" is selected for adjustEstimate) the amount to increase the remaining estimate by e.g. "2d"]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                            status="204"><ns2:doc><![CDATA[Returned if delete was successful]]></ns2:doc></ns2:representation><ns2:representation
+                            status="400"><ns2:doc><![CDATA[Returned if the input is invalid (e.g. missing required fields, invalid values, and so forth).]]></ns2:doc></ns2:representation><ns2:representation
+            status="403"><ns2:doc><![CDATA[Returned if the calling user does not have permission to delete the worklog]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="api/2/mypermissions"><ns2:doc><![CDATA[Provide permission information for the current user.]]></ns2:doc><ns2:method
+                name="GET"
+                        id="getPermissions"><ns2:doc><![CDATA[Returns all permissions in the system and whether the currently logged in user has them. You can optionally provide a specific context to get permissions for
+ (projectKey OR projectId OR issueKey OR issueId)
+ <ul>
+    <li> When no context supplied the project related permissions will return true if the user has that permission in ANY project </li>
+    <li> If a project context is provided, project related permissions will return true if the user has the permissions in the specified project.
+        For permissions that are determined using issue data (e.g Current Assignee), true will be returned if the user meets the permission criteria in ANY issue in that project </li>
+    <li> If an issue context is provided, it will return whether or not the user has each permission in that specific issue</li>
+ </ul>
+ <p>
+    NB: The above means that for issue-level permissions (EDIT_ISSUE for example), hasPermission may be true when no context is provided, or when a project context is provided,
+    <b>but</b> may be false for any given (or all) issues. This would occur (for example) if Reporters were given the EDIT_ISSUE permission. This is because
+    any user could be a reporter, except in the context of a concrete issue, where the reporter is known.
+ </p>
+ <p>
+    Global permissions will still be returned for all scopes.
+ </p>]]></ns2:doc><ns2:request><ns2:param
+                        type="xs:string" style="query" name="projectKey"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[- key of project to scope returned permissions for.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:string" style="query" name="projectId"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[- id of project to scope returned permissions for.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:string" style="query" name="issueKey"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[- key of the issue to scope returned permissions for.]]></ns2:doc></ns2:param><ns2:param
+                        type="xs:string" style="query" name="issueId"
+                        xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[- id of the issue to scope returned permissions for.]]></ns2:doc></ns2:param></ns2:request><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="permission"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"permissions":{"EDIT_ISSUE":{"id":"12","key":"EDIT_ISSUE","name":"Edit Issues","description":"Ability to edit issues.","havePermission":true}}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a list of all permissions in JIRA and whether the user has them.]]></ns2:doc></ns2:representation><ns2:representation
+            status="500"><ns2:doc><![CDATA[Returned if an error occurs while retrieving permissions.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/resolution"><ns2:method name="GET"
+                        id="getResolutions"><ns2:doc><![CDATA[Returns a list of all resolutions.]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="list of resolutions"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/resolution/1","description":"A fix for this issue is checked into the tree and tested.","iconUrl":"http://www.example.com/jira/images/icons/status_resolved.gif","name":"Fixed"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the resolutions exists and the user has permission to view them. Contains a full representation of
+      the resolution in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:resource
+                    path="{id}"><ns2:param type="xs:string"
+                    style="template" name="id"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"><ns2:doc><![CDATA[a String containing the resolution id]]></ns2:doc></ns2:param><ns2:method
+                    name="GET"
+                            id="getResolution"><ns2:doc><![CDATA[Returns a resolution.]]></ns2:doc><ns2:response><ns2:representation
+                            status="404"><ns2:doc><![CDATA[Returned if the resolution does not exist or the user does not have permission to view it.]]></ns2:doc></ns2:representation><ns2:representation
+                            mediaType="application/json" status="200"
+                                    element="resolution"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2/resolution/1","description":"A fix for this issue is checked into the tree and tested.","iconUrl":"http://www.example.com/jira/images/icons/status_resolved.gif","name":"Fixed"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returned if the resolution exists and the user has permission to view it. Contains a full representation of
+      the resolution in JSON format.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resource><ns2:resource
+                path="auth/1/session"><ns2:doc><![CDATA[Implement a REST resource for acquiring a session cookie.]]></ns2:doc><ns2:method
+                name="POST"
+                        id="login"><ns2:doc><![CDATA[Login a user to JIRA.]]></ns2:doc><ns2:request><ns2:representation
+                                mediaType="application/json"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"username":"fred","password":"freds_password"}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:request><ns2:response><ns2:representation
+                                status="200"><ns2:doc><ns3:p
+                        xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"session":{"name":"JSESSIONID","value":"12345678901234567890"},"loginInfo":{"failedLoginCount":10,"loginCount":127,"lastFailedLoginTime":"2011-11-10T05:57:30.328-0600","previousLoginTime":"2011-11-10T05:57:30.328-0600"}}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[The response contains an Atlassian-wide "session" portion containing the session ID that can
+      used for further authenticated-requests.
+
+      It also contains a JIRA-specific "loginInfo" section containing information about the current user's
+      login details.]]></ns2:doc></ns2:representation><ns2:representation
+                        status="401"><ns2:doc><![CDATA[Returned if the login fails due to an invalid credentials.]]></ns2:doc></ns2:representation><ns2:representation
+                status="403"><ns2:doc><![CDATA[Returned if the login is denied due to a CAPTCHA requirement, throtting, or any other reason. It's possible
+      that the supplied credentials are valid, in this case.]]></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                name="GET"
+                        id="currentUser"><ns2:doc><![CDATA[Get information about the current user. If the current user is anonymous they will get a permission denied error
+ trying to access this resource.
+ The response contains information about the current user. It will contain their username, login information,
+ and a link to the User Resource for the user.]]></ns2:doc><ns2:response><ns2:representation
+                                status="200"><ns2:doc><ns3:p
+                xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"self":"http://www.example.com/jira/rest/api/2.0/user/fred","name":"fred","loginInfo":{"failedLoginCount":10,"loginCount":127,"lastFailedLoginTime":"2011-11-10T05:57:30.328-0600","previousLoginTime":"2011-11-10T05:57:30.328-0600"}}</ns3:code></ns3:pre></ns3:p></ns2:doc></ns2:representation></ns2:response></ns2:method><ns2:method
+                name="DELETE"
+                        id="logout"><ns2:doc><![CDATA[Log the current user out of JIRA.]]></ns2:doc><ns2:response><ns2:representation
+                        status="204"><ns2:doc><![CDATA[Returned if the user was successfully logged out.]]></ns2:doc></ns2:representation><ns2:representation
+            status="401"><ns2:doc><![CDATA[Returned if the user is not authenticated.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/serverInfo"><ns2:method name="GET"
+                        id="getServerInfo"><ns2:doc><![CDATA[Returns general information about the current JIRA server.]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="serverInfo"><ns2:doc><ns3:p
+            xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>{"baseUrl":"http://localhost:8080/jira","version":"5.0-SNAPSHOT","versionNumbers":[5,0,0],"buildNumber":582,"buildDate":"2011-11-10T05:57:30.985-0600","serverTime":"2011-11-10T05:57:30.985-0600","scmInfo":"482389","buildPartnerName":"Example Partner Co.","serverTitle":"My Shiny New JIRA Server"}</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Returns a full representation of the server info in JSON format]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource><ns2:resource
+                path="api/2/field"><ns2:method name="GET"
+                        id="getFields"><ns2:doc><![CDATA[Returns a list of all fields, both System and Custom]]></ns2:doc><ns2:response><ns2:representation
+                        mediaType="application/json" status="200"
+                                element="List of field"><ns2:doc><ns3:p xmlns:ns3="http://www.w3.org/1999/xhtml"><ns3:h6>Example</ns3:h6><ns3:pre><ns3:code>[{"id":"description","name":"Description","custom":false,"schema":{"type":"string","system":"description"}},{"id":"summary","name":"Summary","custom":false,"schema":{"type":"string","system":"summary"}}]</ns3:code></ns3:pre></ns3:p></ns2:doc><ns2:doc><![CDATA[Contains a full representation of all visible fields in JSON.]]></ns2:doc></ns2:representation></ns2:response></ns2:method></ns2:resource></ns2:resources></ns2:application>
