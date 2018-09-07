@@ -29,7 +29,7 @@ class JiraApiService extends BaseApi
             'maxResults' => $maxResults,
             'jql' => "project = {$project} {$sprintFilter}order by created ASC"
         ];
-        dump($params);
+
         return $this->call('GET', $endpoint, $params);
     }
 
