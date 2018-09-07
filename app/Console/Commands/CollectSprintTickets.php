@@ -8,11 +8,11 @@ use App\Services\Api\JiraApiService;
 use App\Services\JiraService;
 use Illuminate\Console\Command;
 
-class James extends Command
+class CollectSprintTickets extends Command
 {
-    protected $signature = 'james';
+    protected $signature = 'CollectSprintTickets';
 
-    protected $description = 'James\'s test stuff';
+    protected $description = 'CollectSprintTickets';
 
     public function handle()
     {
