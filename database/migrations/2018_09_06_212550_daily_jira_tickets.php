@@ -16,7 +16,7 @@ class DailyJiraTickets extends Migration
         Schema::create('daily_jira_tickets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned();
-            $table->integer('sprint_id')->unsigned();
+            $table->integer('sprint_id')->unsigned()->nullable();
             $table->date('collection_date');
             $table->string('ticket_number', 32);
             $table->string('issue_type', 32);

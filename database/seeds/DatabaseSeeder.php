@@ -12,9 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\Project::where([])->delete();
-        \App\Models\Project::create(
-            ['project_name' => 'PE']
-        );
+        \App\Models\Project::create(['project_name' => 'PE']);
+        \App\Models\Project::create(['project_name' => 'TRIAGE']);
 
         \App\Models\Sprint::where([])->delete();
         \App\Models\Sprint::create([

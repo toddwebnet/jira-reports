@@ -8,17 +8,25 @@ use App\Services\Api\JiraApiService;
 
 class JiraService
 {
-    public function collectAndProcessSprintTickets(Project $project, Sprint $sprint)
+    public function collectAndProcessSprintTickets(Project $project, ?Sprint $sprint)
     {
 
         /** @var  $jira JiraApiService */
         $jira = app()->make(JiraApiService::class);
         $collectionDate = date("Y-m-d", time());
         DailyJiraTicket::where('collection_date', $collectionDate)->delete();
+        if ($sprint === null) {
+            $sprintName = null;
+            $sprintId = null;
+        } else {
+            $sprintName = $sprint->sprint_name;
+            $sprintId = $sprint->id;
+        }
         $page = 0;
+        print "\n{$project->project_name} - {$sprintName}";
         do {
             print "\nPage: {$page}\n";
-            $response = $jira->getSprintTickets($project->project_name, $sprint->sprint_name, $page);
+            $response = $jira->getSprintTickets($project->project_name, $sprintName, $page);
             if ($response->getStatusCode() == 200) {
                 $daGoods = json_decode((string)$response->getBody());
                 foreach ($daGoods->issues as $issue) {
@@ -30,7 +38,7 @@ class JiraService
                     }
                     $colleciton = [
                         'project_id' => $project->id,
-                        'sprint_id' => $sprint->id,
+                        'sprint_id' => $sprintId,
                         'collection_date' => $collectionDate,
                         'ticket_number' => $issue->key,
                         'issue_type' => $issue->fields->issuetype->name,

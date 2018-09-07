@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 
 class CollectSprintTickets extends Command
 {
-    protected $signature = 'CollectSprintTickets';
+    protected $signature = 'tickets:collect';
 
     protected $description = 'CollectSprintTickets';
 
@@ -19,14 +19,18 @@ class CollectSprintTickets extends Command
 
         $projects = Project::all();
         $today = date("Y-m-d", time());
-        $sprints = Sprint::where('begin_date', '<=', $today)
-             ->where('end_date', '>=', $today)
+        $sprints = Sprint::where('end_date', '>=', $today)
             ->get();
 
         $jiraService = new JiraService();
         foreach ($projects as $project) {
-            foreach ($sprints as $sprint) {
-                $jiraService->collectAndProcessSprintTickets($project, $sprint);
+
+            if ($project->project_name == 'TRIAGE') {
+                $jiraService->collectAndProcessSprintTickets($project, null);
+            } else {
+                foreach ($sprints as $sprint) {
+                    $jiraService->collectAndProcessSprintTickets($project, $sprint);
+                }
             }
         }
     }

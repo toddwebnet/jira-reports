@@ -15,10 +15,14 @@ class JiraApiService extends BaseApi
         // jql: "project = PE AND Sprint = 284 order by created DESC"
         $endpoint = '/rest/api/2/search';
         $startAt = $page * $maxResults;
+        $sprintFilter = "";
+        if($sprint!==null){
+            $sprintFilter = "AND Sprint = {$sprint} ";
+        }
         $params = [
             'startAt' => $startAt,
             'maxResults' => $maxResults,
-            'jql' => "project = {$project} AND Sprint = {$sprint} order by created ASC"
+            'jql' => "project = {$project} {$sprintFilter}order by created ASC"
         ];
         return $this->call('GET', $endpoint, $params);
     }

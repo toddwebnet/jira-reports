@@ -16,7 +16,7 @@ if [ ! -f /etc/apache2/ssl/server.crt ]; then
   openssl genrsa -des3 -passout pass:x -out /etc/apache2/ssl/server.pass.key 2048
   openssl rsa -passin pass:x -in /etc/apache2/ssl/server.pass.key -out /etc/apache2/ssl/server.key
   rm /etc/apache2/ssl/server.pass.key
-  openssl req -new -key /etc/apache2/ssl/server.key -out /etc/apache2/ssl/server.csr -subj "/C=US/ST=DC/L=Texas/O=Todd/OU=IT Department/CN=*.fei.com"
+  openssl req -new -key /etc/apache2/ssl/server.key -out /etc/apache2/ssl/server.csr -subj "/C=US/ST=DC/L=Texas/O=Todd/OU=IT Department/CN=*.local.com"
   openssl x509 -req -days 365 -in /etc/apache2/ssl/server.csr -signkey /etc/apache2/ssl/server.key -out /etc/apache2/ssl/server.crt
 
 fi
