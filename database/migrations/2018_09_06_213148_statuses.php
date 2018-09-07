@@ -17,6 +17,8 @@ class Statuses extends Migration
             $table->increments('id');
             $table->string('status_name');
             $table->tinyInteger('order_id');
+            $table->string('color', 8);
+            $table->string('bgcolor', 8);
             $table->timestamps();
         });
     }
