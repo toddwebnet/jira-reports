@@ -11,9 +11,9 @@
 
 
 
-    <canvas id="myChart-PE" width="100%" height="45%"></canvas>
+    <canvas id="myChart-PE" width="100%" height="40%"></canvas>
 
-    <canvas id="myChart-TRIAGE" width="100%" height="45%"></canvas>
+    <canvas id="myChart-TRIAGE" width="100%" height="40%"></canvas>
 
     <script>
       jQuery(document).ready(function () {
