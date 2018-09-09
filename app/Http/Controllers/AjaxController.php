@@ -7,35 +7,11 @@ use App\Services\SprintService;
 
 class AjaxController
 {
-    public function chartData()
+    public function chartData($project)
     {
         /** @var  $sprintService SprintService */
         $sprintService = app()->make(SprintService::class);
-        return $sprintService->getChartData('PE');
+        return $sprintService->getChartData($project);
 
-        return;
-        $data = [
-            'labels' => ['January', 'February'],
-            'datasets' => [
-                [
-                    'label' => 'open',
-                    'backgroundColor' => '#990000',
-                    'data' => [
-                        10, 20
-                    ]
-                ],
-
-                [
-                    'label' => 'closed',
-                    'backgroundColor' => '#009900',
-                    'data' => [
-                        10, 20
-                    ]
-                ],
-
-            ],
-
-        ];
-        return $data;
     }
 }

@@ -33,13 +33,13 @@ class DatabaseSeeder extends Seeder
             'status_name' => 'Open',
             'order_id' => 1,
 
-            'bgcolor' => '#3333FF',
+            'bgcolor' => '#000066',
         ]);
         \App\Models\Status::create([
             'status_name' => 'In Progress',
             'order_id' => 2,
 
-            'bgcolor' => '#ff6600',
+            'bgcolor' => '#006600',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Code Review',
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             'status_name' => 'In QA',
             'order_id' => 4,
 
-            'bgcolor' => '#FFFF66',
+            'bgcolor' => '#666600',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Resolved',

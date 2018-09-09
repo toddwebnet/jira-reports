@@ -11,57 +11,32 @@
 
 
 
-    <canvas id="myChart" width="400px" height="300px"></canvas>
+    <canvas id="myChart-PE" width="100%" height="45%"></canvas>
+
+    <canvas id="myChart-TRIAGE" width="100%" height="45%"></canvas>
+
     <script>
       jQuery(document).ready(function () {
-        loadData();
+        loadData('PE');
+        loadData('TRIAGE');
       });
 
-      function loadData() {
-        endPoint = '/ajax/chart-data'
+      function loadData(project) {
+        endPoint = '/ajax/chart-data/' + project
         jQuery.ajax({
           url: endPoint,
           type: "GET",
           cache: false,
           dataType: "json",
         }).done(function (data) {
-          // alert(data.word);
-
-          barChartData = {
-            labels: ['January', 'February'],
-            datasets: [{
-              label: 'Open',
-              backgroundColor: "#009900",
-              data: [
-                100,
-                200,
-              ]
-            }, {
-              label: 'Dataset 2',
-              backgroundColor: "#990000",
-              data: [
-                299, 399
-              ]
-            }, {
-              label: 'Dataset 3',
-              backgroundColor: "#000099",
-              data: [
-                199, 29
-              ]
-            }]
-
-          };
-
           drawChart(data);
-
-
         });
       }
 
 
       function drawChart(barChartData) {
 
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx = document.getElementById('myChart-'+barChartData.project).getContext('2d');
         window.myBar = new Chart(ctx, {
           type: 'bar',
           data: barChartData,

@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('page');
 });
 
-Route::get('/ajax/chart-data', 'AjaxController@chartData');
+Route::get('/ajax/chart-data/{projectName}', 'AjaxController@chartData');

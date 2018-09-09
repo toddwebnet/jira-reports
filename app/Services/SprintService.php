@@ -18,25 +18,39 @@ class SprintService
         $sprint = Sprint::getCurrentSprint();
         $statuses = Status::orderBy('order_id')->get();
 
+        $params = [$project->id];
+        if($projectName == 'TRIAGE'){
+            $sprintJoin = "";
+            $sprintCondition = " and collection_date between ? and ? ";
+            $params[] = $sprint->begin_date;
+            $params[] = $sprint->end_date;
+        } else{
+
+            $sprintJoin = "inner join sprints s on s.id = t.sprint_id";
+            $sprintCondition = "  and s.id = ? ";
+            $params[] = $sprint->id;
+        }
+
         $tickets = DB::select("
         select collection_date, status, sum(coalesce(points, 1)) as points, sum(1) as ticket_count
         from 
         daily_jira_tickets t
         inner join projects p on p.id = t.project_id
-        inner join sprints s on s.id = t.sprint_id
-        where p.id = 1 and s.id = 2
+        {$sprintJoin}
+        where p.id = ? {$sprintCondition}
         and issue_type in ('Story', 'Bug')
         group by collection_date, status
         order by collection_date, status
-        ");
-        return $this->compileChartData($sprint, $this->getSprintWorkDays($sprint, $tickets), $this->buildStatusFields($statuses), $tickets);
+        ", $params);
+        return $this->compileChartData($projectName, $sprint, $this->getSprintWorkDays($sprint, $tickets), $this->buildStatusFields($statuses), $tickets);
     }
 
-    private function compileChartData($sprint, $sprintWorkDays, $statusFields, $tickets)
+    private function compileChartData($projectName, $sprint, $sprintWorkDays, $statusFields, $tickets)
     {
 
         return [
-            'title' => "Burn Down Chart for {$sprint->sprint_name} (unpointed tickets default to 1 point}",
+            'project' => $projectName,
+            'title' => "{$projectName} Burn Down Chart for {$sprint->sprint_name} (unpointed tickets default to 1 point}",
             'labels' => array_keys($sprintWorkDays),
             'datasets' => $this->getDataSets($sprintWorkDays, $statusFields, $tickets)
         ];
