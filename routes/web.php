@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('page');
 });
+
+Route::get('/ajax/chart-data', 'AjaxController@chartData');

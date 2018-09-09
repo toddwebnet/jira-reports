@@ -14,14 +14,21 @@ class JiraService
         /** @var  $jira JiraApiService */
         $jira = app()->make(JiraApiService::class);
         $collectionDate = date("Y-m-d", time());
-        DailyJiraTicket::where('collection_date', $collectionDate)->delete();
+
+        $deleteFilters = [
+            'collection_date' => $collectionDate,
+            'project_id' => $project->id
+        ];
+
         if ($sprint === null) {
             $sprintName = null;
             $sprintId = null;
         } else {
             $sprintName = $sprint->sprint_name;
             $sprintId = $sprint->id;
+            $deleteFilters['sprint_id'] = $sprint->id;
         }
+        DailyJiraTicket::where($deleteFilters)->delete();
         $page = 0;
         print "\n{$project->project_name} - {$sprintName}";
         do {
@@ -47,7 +54,8 @@ class JiraService
                         'priority' => $issue->fields->priority->name,
                         'points' => $issue->fields->customfield_10004,
                     ];
-                    DailyJiraTicket::create($colleciton);
+
+                    $ticket = DailyJiraTicket::create($colleciton);
                 }
             }
             $page++;

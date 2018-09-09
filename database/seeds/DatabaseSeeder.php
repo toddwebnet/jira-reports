@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\Sprint::where([])->delete();
         \App\Models\Sprint::create([
             'sprint_name' => 'GAIA-18',
-            'begin_date' => '2018-09-02',
-            'end_date' => '2018-09-15'
+            'begin_date' => '2018-08-26',
+            'end_date' => '2018-09-08'
         ]);
         \App\Models\Sprint::create([
             'sprint_name' => 'GAIA-19',
-            'begin_date' => '2018-09-16',
-            'end_date' => '2018-09-29'
+            'begin_date' => '2018-09-09',
+            'end_date' => '2018-09-22'
         ]);
 
         \App\Models\Status::where([])->delete();
@@ -32,37 +32,37 @@ class DatabaseSeeder extends Seeder
         \App\Models\Status::create([
             'status_name' => 'Open',
             'order_id' => 1,
-            'color' => '#ffffff',
-            'bgcolor' => '#000033',
+
+            'bgcolor' => '#3333FF',
         ]);
         \App\Models\Status::create([
             'status_name' => 'In Progress',
             'order_id' => 2,
-            'color' => '#ffffff',
-            'bgcolor' => '#3333FF',
+
+            'bgcolor' => '#ff6600',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Code Review',
             'order_id' => 3,
-            'color' => '#ffffff',
-            'bgcolor' => '#006600',
+
+            'bgcolor' => '#660000',
         ]);
         \App\Models\Status::create([
             'status_name' => 'In QA',
             'order_id' => 4,
-            'color' => '#000000',
+
             'bgcolor' => '#FFFF66',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Resolved',
             'order_id' => 5,
-            'color' => '#000000',
-            'bgcolor' => '#330000',
+
+            'bgcolor' => '#999999',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Closed',
             'order_id' => 6,
-            'color' => '#000000',
+
             'bgcolor' => '#cccccc',
         ]);
     }

@@ -8,7 +8,6 @@ class Status extends Model
     protected $fillable = [
         'status_name',
         'order_id',
-        'color',
         'bgcolor'
     ];
 }
