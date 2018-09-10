@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get('/ajax/chart-data/{projectName}', 'AjaxController@chartData');
+Route::get('/ajax/chart-data/{projectName}/{sprintName}', 'AjaxController@chartDataSprint');

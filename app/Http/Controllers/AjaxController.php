@@ -14,4 +14,11 @@ class AjaxController
         return $sprintService->getChartData($project);
 
     }
+    public function chartDataSprint($project, $sprint)
+    {
+        /** @var  $sprintService SprintService */
+        $sprintService = app()->make(SprintService::class);
+        return $sprintService->getChartData($project, $sprint);
+
+    }
 }

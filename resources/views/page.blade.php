@@ -1,6 +1,6 @@
 @extends('layouts.template')
 
-@section('title',  "This is my Title" )
+@section('title',  "JIRA - Reports" )
 
 @section('body')
 

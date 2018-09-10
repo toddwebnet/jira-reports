@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class SprintService
 {
-    public function getChartData($projectName)
+    public function getChartData($projectName, $sprintName = '')
     {
 
         $project = Project::where('project_name', $projectName)->firstOrFail();
-
-        $sprint = Sprint::getCurrentSprint();
+        if($sprintName == '') {
+            $sprint = Sprint::getCurrentSprint();
+        } else
+        {
+            $sprint = Sprint::where('sprint_name', $sprintName);
+        }
         $statuses = Status::orderBy('order_id')->get();
 
         $params = [$project->id];
@@ -59,13 +63,13 @@ class SprintService
     private function getSprintWorkDays($sprint, $tickets)
     {
         $days = [
-            0 => 'Sun',
+            // 0 => 'Sun',
             1 => 'Mon',
             2 => 'Tue',
             3 => 'Wed',
             4 => 'Thu',
             5 => 'Fri',
-            6 => 'Sat',
+            // 6 => 'Sat',
         ];
         $curWeek = 1;
         $movingDate = strtotime($sprint->begin_date);
@@ -93,7 +97,7 @@ class SprintService
         $ticketCount = 0;
         $points = 0;
         foreach ($tickets as $ticket) {
-            if ($timestamp = strtotime($ticket->collection_date)) {
+            if ($timestamp == strtotime($ticket->collection_date)) {
                 $points += $ticket->points;
                 $ticketCount += $ticket->ticket_count;
             }
