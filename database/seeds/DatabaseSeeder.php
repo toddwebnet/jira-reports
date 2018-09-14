@@ -32,38 +32,37 @@ class DatabaseSeeder extends Seeder
         \App\Models\Status::create([
             'status_name' => 'Open',
             'order_id' => 1,
-
             'bgcolor' => '#000066',
         ]);
         \App\Models\Status::create([
             'status_name' => 'In Progress',
             'order_id' => 2,
-
             'bgcolor' => '#006600',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Code Review',
             'order_id' => 3,
-
-            'bgcolor' => '#660000',
+            'bgcolor' => '#660066',
         ]);
         \App\Models\Status::create([
             'status_name' => 'In QA',
             'order_id' => 4,
-
-            'bgcolor' => '#666600',
+            'bgcolor' => '#ffff33',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Resolved',
             'order_id' => 5,
-
             'bgcolor' => '#999999',
         ]);
         \App\Models\Status::create([
             'status_name' => 'Closed',
             'order_id' => 6,
-
             'bgcolor' => '#cccccc',
+        ]);
+        \App\Models\Status::create([
+            'status_name' => 'Waiting for Information',
+            'order_id' => 7,
+            'bgcolor' => '#ff9999',
         ]);
     }
 }

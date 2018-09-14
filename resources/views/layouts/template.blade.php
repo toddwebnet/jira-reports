@@ -86,7 +86,6 @@
 <link href="/css/select2.min.css" rel="stylesheet"/>
 <script src="/js/select2.min.js"></script>
 
-<script src="/js/fulfillment.js"></script>
 
 </body>
 </html>

@@ -14,21 +14,26 @@ class SprintService
     {
 
         $project = Project::where('project_name', $projectName)->firstOrFail();
-        if($sprintName == '') {
+
+        if ($sprintName == '') {
             $sprint = Sprint::getCurrentSprint();
-        } else
-        {
+        } else {
+            // sprint
             $sprint = Sprint::where('sprint_name', $sprintName);
         }
-        $statuses = Status::orderBy('order_id')->get();
+        if ($projectName == 'TRIAGE') {
+            $statuses = Status::orderBy('order_id')->get();
+        } else {
+            $statuses = Status::where('status_name', '!=', 'Waiting for Information')->orderBy('order_id')->get();
+        }
 
         $params = [$project->id];
-        if($projectName == 'TRIAGE'){
+        if ($projectName == 'TRIAGE') {
             $sprintJoin = "";
-            $sprintCondition = " and collection_date between ? and ? ";
+            $sprintCondition = " and status!='Closed' ";
             $params[] = $sprint->begin_date;
             $params[] = $sprint->end_date;
-        } else{
+        } else {
 
             $sprintJoin = "inner join sprints s on s.id = t.sprint_id";
             $sprintCondition = "  and s.id = ? ";
