@@ -22,7 +22,7 @@ class SprintService
             $sprint = Sprint::where('sprint_name', $sprintName);
         }
         if ($projectName == 'TRIAGE') {
-            $statuses = Status::orderBy('order_id')->get();
+            $statuses = Status::where('status_name', '!=', 'Closed')->orderBy('order_id')->get();
         } else {
             $statuses = Status::where('status_name', '!=', 'Waiting for Information')->orderBy('order_id')->get();
         }
