@@ -53,6 +53,7 @@ class JiraService
                         'assigned_to' => $assignedTo,
                         'priority' => $issue->fields->priority->name,
                         'points' => $issue->fields->customfield_10004,
+                        'epic' => $issue->fields->customfield_10400,
                     ];
 
                     $ticket = DailyJiraTicket::create($colleciton);

@@ -33,4 +33,10 @@ class JiraApiService extends BaseApi
         return $this->call('GET', $endpoint, $params);
     }
 
+    public function getTicket($ticketNumber)
+    {
+        $endpoint = '/rest/api/2/issue/' . urlencode($ticketNumber);
+        return $this->call('GET', $endpoint);
+    }
+
 }
