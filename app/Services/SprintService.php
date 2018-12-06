@@ -12,7 +12,6 @@ class SprintService
 {
     public function getChartData($projectName, $sprintName = '')
     {
-
         $project = Project::where('project_name', $projectName)->firstOrFail();
 
         if ($sprintName == '') {

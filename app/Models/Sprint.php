@@ -33,13 +33,19 @@ class Sprint extends Model
     public static function getCurrentSprint()
     {
         $today = date("Y-m-d", time());
+
         try {
-            return $sprint = Sprint::where('begin_date', '<=', $today)
+            $sprint = Sprint::where('begin_date', '<=', $today)
                 ->where('end_date', '>=', $today)
                 ->orderBy('begin_date')
                 ->firstOrFail();
+
+            return $sprint;
         } catch (ModelNotFoundException $e) {
-            return null;
+            $sprint = Sprint::orderBy('end_date', 'desc')
+                ->first();
+            return $sprint;
+
         }
     }
 
