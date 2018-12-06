@@ -16,7 +16,10 @@ class GetTicket extends Command
     {
         $jira = new JiraApiService();
         $response = $jira->getTicket($this->argument('ticket'));
-        print_r(json_decode((string)$response->getBody()));
+        $this->line('');
+        $this->line((string)$response->getBody());
+        $this->line('');
+        // print_r(json_decode((string)$response->getBody()));
 
     }
 }
