@@ -53,6 +53,111 @@ class SprintService
         return $this->compileChartData($projectName, $sprint, $this->getSprintWorkDays($sprint, $tickets), $this->buildStatusFields($statuses), $tickets);
     }
 
+    public function getSummaryFigures($projectName, $sprintName = '')
+    {
+        if ($sprintName == '') {
+            $sprint = Sprint::getCurrentSprint();
+        } else {
+            // sprint
+            $sprint = Sprint::where('sprint_name', $sprintName);
+        }
+        return [
+            'pointSummary' => $this->getPointSummary($sprint),
+            'daysInStatus' => $this->getDaysInStatus($sprint)
+        ];
+    }
+
+    private function getPointSummary($sprint)
+    {
+        $sql = "
+        select collection_date, sum(points) as points
+          from daily_jira_tickets 
+          where collection_date between ? and ?
+          group by collection_date 
+          order by collection_date
+        ";
+        $params = [
+            $sprint->begin_date,
+            $sprint->end_date
+        ];
+        $pointDays = DB::select($sql, $params);
+        $startPoints = null;
+        $maxPoints = null;
+        $minPoints = null;
+        $endPoints = null;
+        $pointTotal = 0;
+        foreach ($pointDays as $day) {
+            if ($startPoints === null) {
+                $startPoints = $day->points;
+            }
+            if ($maxPoints === null || $day->points > $maxPoints) {
+                $maxPoints = $day->points;
+            }
+            if ($minPoints === null || $day->points < $minPoints) {
+                $minPoints = $day->points;
+            }
+            $endPoints = $day->points;
+            $pointTotal += $day->points;
+        }
+        $avgPoints = round($pointTotal / count($pointDays),2);
+        return [
+            'startPoints' => $startPoints,
+            'endPoints' => $endPoints,
+            'minPoints' => $minPoints,
+            'maxPoints' => $maxPoints,
+            'avgPoints' => $avgPoints
+        ];
+    }
+
+    private function getDaysInStatus($sprint)
+    {
+        $sql = "
+        select collection_date, ticket_number, status
+          from daily_jira_tickets 
+          where collection_date between ? and ?
+          order by collection_date, ticket_number
+        ";
+        $params = [
+            $sprint->begin_date,
+            $sprint->end_date
+        ];
+        $tickets = DB::select($sql, $params);
+        $data = [];
+        foreach ($tickets as $ticket) {
+            if (!array_key_exists($ticket->ticket_number, $data)) {
+                $data[$ticket->ticket_number] = [];
+            }
+            if (!array_key_exists($ticket->status, $data[$ticket->ticket_number])) {
+                $data[$ticket->ticket_number][$ticket->status] = 1;
+            } else {
+                $data[$ticket->ticket_number][$ticket->status]++;
+            }
+        }
+        $template = [
+            'days' => 0,
+            'counts' => 0
+        ];
+        $counts = [
+            'Open' => $template,
+            'In Progress' => $template,
+            'Code Review' => $template,
+            'In QA' => $template,x
+        ];
+        foreach ($data as $ticket => $status) {
+            foreach ($status as $stat => $days) {
+                if (array_key_exists($stat, $counts)) {
+                    $counts[$stat]['days'] += $days;
+                    $counts[$stat]['counts']++;
+                }
+            }
+        }
+        $averages = [];
+        foreach (array_keys($counts) as $stat) {
+            $averages[$stat] = round($counts[$stat]['days'] / $counts[$stat]['counts'], 2);
+        }
+        return $averages;
+    }
+
     private function compileChartData($projectName, $sprint, $sprintWorkDays, $statusFields, $tickets)
     {
 

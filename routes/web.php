@@ -11,9 +11,19 @@
 |
 */
 
+
+Route::get('/', function () {
+    return view('hackathon');
+});
+
+Route::get('/ajax/chart-data/{projectName}', 'AjaxController@chartData');
+
+/*
+
 Route::get('/', function () {
     return view('page');
 });
 
 Route::get('/ajax/chart-data/{projectName}', 'AjaxController@chartData');
 Route::get('/ajax/chart-data/{projectName}/{sprintName}', 'AjaxController@chartDataSprint');
+*/
