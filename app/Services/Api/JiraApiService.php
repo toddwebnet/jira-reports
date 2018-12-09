@@ -39,6 +39,15 @@ class JiraApiService extends BaseApi
         return $this->call('GET', $endpoint);
     }
 
+    public function getProject($project){
+        $endpoint = "rest/api/2/issue/createmeta?projectKeys={$project}&expand=projects.issuetypes.fields";
+        return $this->call('GET', $endpoint);
+    }
+    public function getProjects(){
+        $endpoint = '/rest/api/2/project';
+        return $this->call('GET', $endpoint);
+    }
+
     public function getFieldLabels($project)
     {
         $endpoint = "rest/api/latest/issue/createmeta?&expand=projects.issuetypes.fields";
