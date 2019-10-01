@@ -58,7 +58,7 @@
 
 
 <div class="container" id="waitingBody" style="display:none;text-align:center; padding: 50px;">
-    <img src="/images/ajax_loader.gif"/>
+{{--    <img src="/images/ajax_loader.gif"/>--}}Loading...
 </div>
 <div id="cartHeader"></div>
 <div class="container" id="mainBody">

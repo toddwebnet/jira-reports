@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Models\Project;
 use App\Models\ProjectAvatar;
 use App\Models\ProjectImportLog;
@@ -20,10 +19,11 @@ class JiraImportService
         $projects = json_decode((string)$response->getBody());
 
         foreach ($projects as $project) {
-            print "Importing: {$project->key}\n";
-            $this->importProject($project->key);
+            if (in_array($project->key, ['A'])) {
+                print "Importing: {$project->key}\n";
+                $this->importProject($project->key);
+            }
         }
-
     }
 
     public function importProject($projectKey)
@@ -37,8 +37,7 @@ class JiraImportService
             'source_id' => $projectKey,
             'source' => $json
         ]);
-        $this->processProjectJson( $json);
-
+        $this->processProjectJson($json);
     }
 
     public function processProjectJson($jsonBlock)
@@ -50,21 +49,20 @@ class JiraImportService
 
         $this->saveProjectAvatars($projectId, $projectChunk->avatarUrls);
 
-        foreach ($projectChunk->issuetypes as $issueType) {
-            $projectIssueType = $this->saveProjectIssueType($projectId, $issueType);
-
-
-        }
+//        foreach ($projectChunk->issuetypes as $issueType) {
+//            $projectIssueType = $this->saveProjectIssueType($projectId, $issueType);
+//        }
     }
 
     private function saveProjectIssueType($projectId, $issueType)
     {
+        // dd($issueType->fields);
         $data = [
             'project_id' => $projectId,
             'name' => $issueType->name,
             'icon_url' => $issueType->iconUrl,
             'sub_task' => $issueType->subtask,
-            'fields' => $this->getProjectIssueTypeFields($issueType->fields),
+            // 'fields' => [],//$this->getProjectIssueTypeFields($issueType->fields),
         ];
         $conditions = [
             'project_id' => $projectId,
@@ -109,13 +107,12 @@ class JiraImportService
         }
     }
 
-    private function getProjectIssueTypeFields(
-        $fields
-    ) {
+    private function getProjectIssueTypeFields($fields)
+    {
+        dd($fields);
         $returnFields = [];
         foreach ($fields as $field) {
             $returnFields[$field->key] = $field->name;
-
         }
         return json_encode($returnFields);
     }

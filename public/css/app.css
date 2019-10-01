@@ -1,7 +1,7 @@
 body {
     padding-top: 50px;
-    background-color: #dbe6f8;
-    background: url(../images/body-bg.png);
+    background-color: #ffffff;
+    /*background: url(../images/body-bg.png);*/
 
 }
 
@@ -58,7 +58,7 @@ input[type="password"] {
 
 .navbar {
     height: 50px;
-    background: url(../images/navbar-short.jpg);
+    /*background: url(../images/navbar-short.jpg);*/
     background-color: #003466;
     background-repeat: no-repeat;
     background-position: center;

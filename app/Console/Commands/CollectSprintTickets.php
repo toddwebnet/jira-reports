@@ -25,13 +25,8 @@ class CollectSprintTickets extends Command
         $jiraService = new JiraService();
         foreach ($projects as $project) {
 
-            if ($project->project_name == 'TRIAGE') {
-                $jiraService->collectAndProcessSprintTickets($project, null);
-            } else {
-
-                foreach ($sprints as $sprint) {
-                    $jiraService->collectAndProcessSprintTickets($project, $sprint);
-                }
+            foreach ($sprints as $sprint) {
+                $jiraService->collectAndProcessSprintTickets($project, $sprint);
             }
         }
     }

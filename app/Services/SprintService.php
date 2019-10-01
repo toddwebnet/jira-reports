@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class SprintService
 {
-    public function getChartData($projectName, $sprintName = '')
+    public function getChartData($projectName, $sprintName = '', $dude = '')
     {
-        $project = Project::where('project_name', $projectName)->firstOrFail();
+        $project = Project::where('project_key', $projectName)->firstOrFail();
 
         if ($sprintName == '') {
             $sprint = Sprint::getCurrentSprint();
@@ -20,23 +20,22 @@ class SprintService
             // sprint
             $sprint = Sprint::where('sprint_name', $sprintName);
         }
-        if ($projectName == 'TRIAGE') {
-            $statuses = Status::where('status_name', '!=', 'Closed')->orderBy('order_id')->get();
-        } else {
-            $statuses = Status::where('status_name', '!=', 'Waiting for Information')->orderBy('order_id')->get();
-        }
+
+        $statuses = Status::orderBy('order_id')->get();
 
         $params = [$project->id];
-        if ($projectName == 'TRIAGE') {
-            $sprintJoin = "";
-            $sprintCondition = " and status!='Closed' ";
-            $params[] = $sprint->begin_date;
-            $params[] = $sprint->end_date;
-        } else {
 
-            $sprintJoin = "inner join sprints s on s.id = t.sprint_id";
-            $sprintCondition = "  and s.id = ? ";
-            $params[] = $sprint->id;
+        $sprintJoin = "inner join sprints s on s.id = t.sprint_id";
+        $sprintCondition = "  and s.id = ? ";
+        $params[] = $sprint->id;
+        $sprintWhere = '';
+        if ($dude != '') {
+            if ($dude == 'Unassigned') {
+                $sprintWhere = ' and t.assigned_to is null ';
+            } else {
+                $sprintWhere = ' and t.assigned_to = ? ';
+                $params[] = $dude;
+            }
         }
 
         $tickets = DB::select("
@@ -47,13 +46,14 @@ class SprintService
         {$sprintJoin}
         where p.id = ? {$sprintCondition}
         and issue_type in ('Story', 'Bug')
+        {$sprintWhere}
         group by collection_date, status
         order by collection_date, status
         ", $params);
         return $this->compileChartData($projectName, $sprint, $this->getSprintWorkDays($sprint, $tickets), $this->buildStatusFields($statuses), $tickets);
     }
 
-    public function getSummaryFigures($projectName, $sprintName = '')
+    public function getSummaryFigures($projectName, $sprintName = '', $dude = '')
     {
         if ($sprintName == '') {
             $sprint = Sprint::getCurrentSprint();
@@ -62,24 +62,31 @@ class SprintService
             $sprint = Sprint::where('sprint_name', $sprintName);
         }
         return [
-            'pointSummary' => $this->getPointSummary($sprint),
-            'daysInStatus' => $this->getDaysInStatus($sprint)
+            'pointSummary' => $this->getPointSummary($sprint, $dude),
+            'daysInStatus' => $this->getDaysInStatus($sprint, $dude)
         ];
     }
 
-    private function getPointSummary($sprint)
+    private function getPointSummary($sprint, $dude)
     {
-        $sql = "
-        select collection_date, sum(points) as points
-          from daily_jira_tickets 
-          where collection_date between ? and ?
-          group by collection_date 
-          order by collection_date
-        ";
         $params = [
             $sprint->begin_date,
             $sprint->end_date
         ];
+        $where = '';
+        if ($dude != '') {
+            $where = " and assigned_to = ? ";
+            $params[] = $dude;
+        }
+        $sql = "
+        select collection_date, sum(points) as points
+          from daily_jira_tickets 
+          where collection_date between ? and ?
+          {$where}
+          group by collection_date 
+          order by collection_date
+        ";
+
         $pointDays = DB::select($sql, $params);
         $startPoints = null;
         $maxPoints = null;
@@ -99,7 +106,7 @@ class SprintService
             $endPoints = $day->points;
             $pointTotal += $day->points;
         }
-        $avgPoints = round($pointTotal / count($pointDays),2);
+        $avgPoints = round($pointTotal / count($pointDays), 2);
         return [
             'startPoints' => $startPoints,
             'endPoints' => $endPoints,
@@ -109,18 +116,25 @@ class SprintService
         ];
     }
 
-    private function getDaysInStatus($sprint)
+    private function getDaysInStatus($sprint, $dude='')
     {
-        $sql = "
-        select collection_date, ticket_number, status
-          from daily_jira_tickets 
-          where collection_date between ? and ?
-          order by collection_date, ticket_number
-        ";
         $params = [
             $sprint->begin_date,
             $sprint->end_date
         ];
+        $where = '';
+        if ($dude != '') {
+            $where = " and assigned_to = ? ";
+            $params[] = $dude;
+        }
+        $sql = "
+        select collection_date, ticket_number, status
+          from daily_jira_tickets 
+          where collection_date between ? and ?
+          {$where}
+          order by collection_date, ticket_number
+        ";
+
         $tickets = DB::select($sql, $params);
         $data = [];
         foreach ($tickets as $ticket) {
@@ -138,10 +152,14 @@ class SprintService
             'counts' => 0
         ];
         $counts = [
-            'Open' => $template,
-            'In Progress' => $template,
+
+            'New' => $template,
+            'Blocked' => $template,
+            'Development' => $template,
             'Code Review' => $template,
-            'In QA' => $template,x
+            'Ready for QA' => $template,
+            'Closed' => $template,
+            'Resolved' => $template,
         ];
         foreach ($data as $ticket => $status) {
             foreach ($status as $stat => $days) {
@@ -152,8 +170,9 @@ class SprintService
             }
         }
         $averages = [];
+
         foreach (array_keys($counts) as $stat) {
-            $averages[$stat] = round($counts[$stat]['days'] / $counts[$stat]['counts'], 2);
+            $averages[$stat] = ($counts[$stat]['counts'] == 0) ? '0' : round($counts[$stat]['days'] / $counts[$stat]['counts'], 2);
         }
         return $averages;
     }

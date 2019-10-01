@@ -11,12 +11,15 @@
 |
 */
 
-
 Route::get('/', function () {
-    return view('hackathon');
+    return view('hackathon', ['dude' => '']);
 });
-
+Route::get('/{dude}', function ($dude) {
+    return view('hackathon', ['dude' => $dude]);
+});
 Route::get('/ajax/chart-data/{projectName}', 'AjaxController@chartData');
+Route::get('/ajax/chart-data/{projectName}/{dude}', 'AjaxController@chartData');
+Route::get('/ajax/user-data/{projectName}', 'AjaxController@userList');
 
 /*
 

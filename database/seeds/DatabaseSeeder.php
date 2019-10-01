@@ -11,31 +11,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Project::where([])->delete();
-        \App\Models\Project::create(['project_name' => 'PE']);
-        \App\Models\Project::create(['project_name' => 'TRIAGE']);
-
-        \App\Models\Sprint::where([])->delete();
-        \App\Models\Sprint::create([
-            'sprint_name' => 'GAIA-18',
-            'begin_date' => '2018-08-26',
-            'end_date' => '2018-09-08'
-        ]);
-        \App\Models\Sprint::create([
-            'sprint_name' => 'GAIA-19',
-            'begin_date' => '2018-09-09',
-            'end_date' => '2018-09-22'
-        ]);
+//        \App\Models\Project::where([])->delete();
+//        \App\Models\Project::create(['project_name' => 'PE']);
+//        \App\Models\Project::create(['project_name' => 'TRIAGE']);
+//
+//        \App\Models\Sprint::where([])->delete();
+//        \App\Models\Sprint::create([
+//            'sprint_name' => 'GAIA-18',
+//            'begin_date' => '2018-08-26',
+//            'end_date' => '2018-09-08'
+//        ]);
+//        \App\Models\Sprint::create([
+//            'sprint_name' => 'GAIA-19',
+//            'begin_date' => '2018-09-09',
+//            'end_date' => '2018-09-22'
+//        ]);
 
         \App\Models\Status::where([])->delete();
 
         \App\Models\Status::create([
-            'status_name' => 'Open',
+            'status_name' => 'New',
             'order_id' => 1,
             'bgcolor' => '#000066',
         ]);
         \App\Models\Status::create([
-            'status_name' => 'In Progress',
+            'status_name' => 'Development',
             'order_id' => 2,
             'bgcolor' => '#006600',
         ]);
@@ -45,23 +45,28 @@ class DatabaseSeeder extends Seeder
             'bgcolor' => '#660066',
         ]);
         \App\Models\Status::create([
-            'status_name' => 'In QA',
+            'status_name' => 'PO Review',
             'order_id' => 4,
             'bgcolor' => '#ffff33',
         ]);
         \App\Models\Status::create([
-            'status_name' => 'Resolved',
+            'status_name' => 'Ready for QA',
             'order_id' => 5,
             'bgcolor' => '#999999',
         ]);
         \App\Models\Status::create([
-            'status_name' => 'Closed',
+            'status_name' => 'Resolved',
             'order_id' => 6,
             'bgcolor' => '#cccccc',
         ]);
         \App\Models\Status::create([
-            'status_name' => 'Waiting for Information',
+            'status_name' => 'Closed',
             'order_id' => 7,
+            'bgcolor' => '#cccccc',
+        ]);
+        \App\Models\Status::create([
+            'status_name' => 'Blocked',
+            'order_id' => 8,
             'bgcolor' => '#ff9999',
         ]);
     }

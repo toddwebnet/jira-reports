@@ -33,7 +33,7 @@ class JiraService
         print "\n{$project->project_name} - {$sprintName}";
         do {
             print "\nPage: {$page}\n";
-            $response = $jira->getSprintTickets($project->project_name, $sprintName, $page);
+            $response = $jira->getSprintTickets($project->project_key, $sprintName, $page);
             if ($response->getStatusCode() == 200) {
                 $daGoods = json_decode((string)$response->getBody());
                 foreach ($daGoods->issues as $issue) {
@@ -52,8 +52,8 @@ class JiraService
                         'status' => $issue->fields->status->name,
                         'assigned_to' => $assignedTo,
                         'priority' => $issue->fields->priority->name,
-                        'points' => $issue->fields->customfield_10004,
-                        'epic' => $issue->fields->customfield_10400,
+                        'points' => $issue->fields->customfield_10002,
+                        'epic' => $issue->fields->customfield_10006,
                     ];
 
                     $ticket = DailyJiraTicket::create($colleciton);
