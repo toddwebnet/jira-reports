@@ -31,7 +31,7 @@ class AjaxController
     public function userList($project)
     {
 
-        $op = " &nbsp; <a class='btn btn-primary' href=\"JavaScript:selectDude('')\">All</a> &nbsp; ";
+        $op = "<nobr> &nbsp; <a class='' href=\"JavaScript:selectDude('')\">All</a> &nbsp; ";
         foreach (DailyJiraTicket::where('project_id', Project::where('project_key', $project)->first()->id)
                      ->whereNotNull('assigned_to')
                      ->select('assigned_to')
@@ -41,8 +41,9 @@ class AjaxController
                  as $dude
         ) {
             $dude = ($dude == null) ? 'Unassigned' : $dude;
-            $op .= " &nbsp; <a  class='btn btn-primary' href=\"JavaScript:selectDude('{$dude}')\">{$dude}</a> &nbsp; ";
+            $op .= " &nbsp; <a  class='' href=\"JavaScript:selectDude('{$dude}')\">{$dude}</a> &nbsp; ";
         }
+        $op .="</nobr>";
         return $op;
     }
 }
